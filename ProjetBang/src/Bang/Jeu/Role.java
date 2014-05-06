@@ -1,11 +1,12 @@
 package Bang.Jeu;
 
 public class Role {
+	
 	private String nom;
 	private int pdvBonus;
 	private String description;
 	
-	public Role(String nom, int pdvBonus, String description) {
+	Role(String nom, int pdvBonus, String description) {
 		this.nom = nom;
 		this.pdvBonus = pdvBonus;
 		this.description = description;

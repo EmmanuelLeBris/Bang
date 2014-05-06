@@ -1,6 +1,7 @@
 package Bang.Jeu;
 
 public class Personnage {
+
 	private String nom;
 	private int pdv;
 	private String description;
@@ -27,10 +28,6 @@ public class Personnage {
 	public String toString() {
 		return "Personnage [nom=" + nom + ", pdv=" + pdv + ", description="
 				+ description + "]";
-	}
-
-	
-	
-		
+	}	
 
 }

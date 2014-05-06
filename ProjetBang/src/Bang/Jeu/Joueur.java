@@ -7,42 +7,33 @@ import Bang.Carte.ActionBonus;
 import Bang.Carte.Arme;
 
 public class Joueur {
-	private int distance;
-	private int portee;
+	private int distance = 1;
+	private int portee = 1;
 	private int pdv;
 	private int pdvmax;
-	private boolean Atire;
-	private ArrayList<Action> main;
-	private ArrayList<ActionBonus> bonus;
-	private boolean tireIllimite;
+	private boolean aTire = false;
+	private ArrayList<Action> main = new ArrayList<Action>();
+	private ArrayList<ActionBonus> bonus = new  ArrayList<ActionBonus>();
+	private boolean tireIllimite = false;
 	private Personnage perso;
 	private Role role;
-	private Arme arme;
-		
+	private Arme arme = null;
+
 	public Joueur(Personnage perso, Role role) {
 		this.perso = perso;
 		this.role = role;
-		this.main=new ArrayList<Action>();
-		this.distance = 1;
-		if (this.perso.getNom().equals("ROSE DOOLAN"))
-		this.portee = 2;
-		else
-		this.portee = 1;
 		this.pdv = perso.getPdv()+role.getPdvBonus();
 		this.pdvmax = perso.getPdv()+role.getPdvBonus();
-		Atire = false;
-		this.tireIllimite=false;
-		this.bonus=new  ArrayList<ActionBonus>();
-		this.arme=null;
-		
+
+		if (this.perso.getNom().equals("ROSE DOOLAN")) portee++;
 	}
 
 	public void donnerAction(Action a)
 	{
 		this.main.add(a);
 	}
-	
-	public boolean esquiver(int nombreRateRequis) // capable d'esquiver
+
+	public boolean peutEsquiver(int nombreRateRequis) // capable d'esquiver
 	{
 		boolean resultat= false;
 		for(int i=0;i<nombreRateRequis;i++)
@@ -54,14 +45,19 @@ public class Joueur {
 		}
 		return resultat;
 	}
+	
+	
 	public Action getAction(String action)
 	{
 		for (Action a : main) {
-			if (a.getNom().equals(action))
+			if (a.getNom().equals(action)){
+				main.remove(a);
 				return a;
+			}	
 		}
 		return null;
 	}
+	
 	public Action defausserRand()
 	{
 		if (main.isEmpty()!=true)
@@ -70,10 +66,17 @@ public class Joueur {
 			return this.main.get(indexrandom);
 		}
 		else
-		return null;
-		
+			return null;
+	}
+	
+	public void enleverPV(int nbPV){
+		pdv-=nbPV;
 	}
 
+	public void ajouterPV(int nbPV){
+		if(pdv<pdvmax)	pdv+=nbPV;
+	}
+	
 	public int getDistance() {
 		return distance;
 	}
@@ -90,19 +93,19 @@ public class Joueur {
 		return pdvmax;
 	}
 
-	public boolean isAtire() {
-		return Atire;
+	public boolean aTire() {
+		return aTire;
 	}
 
 	public ArrayList<Action> getMain() {
 		return main;
 	}
 
-	
+
 	public void setPortee(int portee) {
 		this.portee = portee;
 	}
-	
+
 
 	public void setDistance(int distance) {
 		this.distance = distance;
@@ -111,7 +114,7 @@ public class Joueur {
 	public boolean isTireIllimite() {
 		return tireIllimite;
 	}
-	
+
 
 	public void setTireIllimite(boolean tireIllimite) {
 		this.tireIllimite = tireIllimite;
@@ -148,14 +151,14 @@ public class Joueur {
 	public void setArme(Action a) {
 		this.arme = (Arme) a;
 	}
-	public void ajouterBonus(Action a)
+	public void ajouterBonus(ActionBonus a)
 	{
-		this.bonus.add((ActionBonus) a);
+		this.bonus.add(a);
 	}
-	
 
-	
-	
-	
+
+
+
+
 
 }

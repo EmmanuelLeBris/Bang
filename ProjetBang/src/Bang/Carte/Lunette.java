@@ -3,11 +3,10 @@ package Bang.Carte;
 import Bang.Jeu.Joueur;
 
 public class Lunette extends ActionBonus {
-	private int porteeBonus;
+	private int porteeBonus = 1;
 
 	public Lunette() {
 		super("Lunette","augmente de 1 la portee de votre arme");
-		this.porteeBonus=1;
 		
 	}
 

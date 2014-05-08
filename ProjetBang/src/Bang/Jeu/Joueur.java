@@ -7,17 +7,18 @@ import Bang.Carte.ActionBonus;
 import Bang.Carte.Arme;
 
 public class Joueur {
-	private int distance = 1;
-	private int portee = 1;
-	private int pdv;
-	private int pdvmax;
-	private boolean aTire = false;
-	private ArrayList<Action> main = new ArrayList<Action>();
-	private ArrayList<ActionBonus> bonus = new  ArrayList<ActionBonus>();
-	private boolean tireIllimite = false;
-	private Personnage perso;
-	private Role role;
-	private Arme arme = null;
+	protected int bonusDistance;
+	protected int portee = 1;
+	protected int pdv;
+	protected int pdvmax;
+	protected boolean aTire = false;
+	protected ArrayList<Action> main = new ArrayList<Action>();
+	protected ArrayList<ActionBonus> bonus = new  ArrayList<ActionBonus>();
+	protected boolean tireIllimite = false;
+	protected Personnage perso;
+	protected Role role;
+	protected Arme arme = null;
+	protected boolean fintour=false;
 
 	public Joueur(Personnage perso, Role role) {
 		this.perso = perso;
@@ -58,6 +59,30 @@ public class Joueur {
 		return null;
 	}
 	
+	public Action getAction(Action action)
+	{
+		if(main.remove(action)) return action;	
+		return null;
+	}
+	
+	public boolean aLAction(String action)
+	{
+		for (Action a : main) {
+			if (a.getNom().equals(action)){
+				return true;
+			}	
+		}
+		return false;
+	}
+	
+	public int nbAction(String action) {
+		int res = 0;
+		for (Action a : main) {
+			if (a.getNom().equals(action)) res++;
+		}
+		return res;
+	}
+	
 	public Action defausserRand()
 	{
 		if (main.isEmpty()!=true)
@@ -78,9 +103,8 @@ public class Joueur {
 	}
 	
 	public int getDistance() {
-		return distance;
+		return bonusDistance;
 	}
-
 	public int getPortee() {
 		return portee;
 	}
@@ -108,7 +132,7 @@ public class Joueur {
 
 
 	public void setDistance(int distance) {
-		this.distance = distance;
+		this.bonusDistance = distance;
 	}
 
 	public boolean isTireIllimite() {
@@ -156,9 +180,35 @@ public class Joueur {
 		this.bonus.add(a);
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((perso == null) ? 0 : perso.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		return result;
+	}
 
-
-
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Joueur other = (Joueur) obj;
+		if (perso == null) {
+			if (other.perso != null)
+				return false;
+		} else if (!perso.equals(other.perso))
+			return false;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		return true;
+	}
 
 }

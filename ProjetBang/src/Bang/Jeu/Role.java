@@ -6,7 +6,7 @@ public class Role {
 	private int pdvBonus;
 	private String description;
 	
-	Role(String nom, int pdvBonus, String description) {
+	public Role(String nom, int pdvBonus, String description) {
 		this.nom = nom;
 		this.pdvBonus = pdvBonus;
 		this.description = description;

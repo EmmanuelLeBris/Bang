@@ -3,12 +3,11 @@ package Bang.Carte;
 import Bang.Jeu.Joueur;
 
 public class Mustang extends ActionBonus {
-	private int distanceBonus;
+	private int distanceBonus = 1;
 	public Mustang() {
-		super("Mustang", "augmente votre distance de 1");
-		this.distanceBonus=1;
-		
+		super("Mustang", "augmente votre distance de 1");		
 	}
+	
 	@Override
 	public void donBonus(Joueur j) {
 		j.setDistance(j.getDistance()+this.distanceBonus);

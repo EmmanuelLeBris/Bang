@@ -82,7 +82,7 @@ public class Jeu {
 		{
 			participants.add(0, participants.get(index));
 			participants.remove(index);
-		}	
+		}
 
 		// ensuite on distribue carte par carte
 		for (int l=0;l<4;l++)
@@ -227,6 +227,18 @@ public class Jeu {
 	}
 	public ArrayList<Joueur> getParticipants() {
 		return participants;
+	}
+	
+	/**
+	 * Calcul la distance réelle pour un joueur afin d'atteindre l'autre joueur
+	 * @param j1 veut atteindre j2
+	 * @param j2 est atteint par j1
+	 * @return distance
+	 */
+	public int calculerDistance(Joueur j1, Joueur j2) {
+		int plusCourteD = 2;
+		if(participants.indexOf(j1)-participants.indexOf(j2)==1) plusCourteD = 1;
+		return (plusCourteD+j2.getDistance());
 	}
 
 }

@@ -1,17 +1,22 @@
 package Bang.Carte;
 
-import Bang.Jeu.ActionSurAdversaire;
 import Bang.Jeu.Jeu;
 import Bang.Jeu.Joueur;
 
 public class CoupDeFoudre extends ActionSurAdversaire {
-
+	/**
+	 * Constructeur d'un coup de foudre
+	 */
 	public CoupDeFoudre() {
 		super("Coup de foudre", "Défausser une carte à un joueur");
 	}
 
+	/**
+	 * Defausse une carte au joueur cible
+	 * @param jeu jeu
+	 * @param cible joueur cible qui se voit défaussé d'une carte
+	 */
 	public void capacite(Jeu jeu, Joueur cible) {
-		//A FAIRE le joueur peut choisir de défausser une carte bonus
 		Action defausse = cible.defausserRand();
 		if(defausse!=null) jeu.defausser(defausse);
 	}

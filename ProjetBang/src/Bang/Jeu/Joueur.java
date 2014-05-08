@@ -7,7 +7,7 @@ import Bang.Carte.ActionBonus;
 import Bang.Carte.Arme;
 
 public class Joueur {
-	protected int bonusDistance;
+	protected int bonusDistance = 0;
 	protected int portee = 1;
 	protected int pdv;
 	protected int pdvmax;
@@ -17,9 +17,13 @@ public class Joueur {
 	protected boolean tireIllimite = false;
 	protected Personnage perso;
 	protected Role role;
-	protected Arme arme = null;
 	protected boolean fintour=false;
 
+	/**
+	 * Constructeur d'un joueur
+	 * @param perso du joueur
+	 * @param role du joueur
+	 */
 	public Joueur(Personnage perso, Role role) {
 		this.perso = perso;
 		this.role = role;
@@ -29,17 +33,26 @@ public class Joueur {
 		if (this.perso.getNom().equals("ROSE DOOLAN")) portee++;
 	}
 
+	/**
+	 * Ajoute une action a la main du joueur
+	 * @param action a donner
+	 */
 	public void donnerAction(Action a)
 	{
 		this.main.add(a);
 	}
 
+	/**
+	 * Test pour savoir si le joueur peut esquiver un bang
+	 * @param nombreRateRequis nombre ratés pour esquiver le bang
+	 * @return si oui ou non le joueur peut esquiver
+	 */
 	public boolean peutEsquiver(int nombreRateRequis) // capable d'esquiver
 	{
 		boolean resultat= false;
 		for(int i=0;i<nombreRateRequis;i++)
 		{
-			if(this.getAction("Rate")!= null)
+			if(this.prendreAction("Rate")!= null)
 				resultat= true;
 			else
 				resultat= false;
@@ -47,8 +60,12 @@ public class Joueur {
 		return resultat;
 	}
 	
-	
-	public Action getAction(String action)
+	/**
+	 * Supprimer une action de la main du joueur
+	 * @param nom de l'action a récupérer
+	 * @return l'action suppérimée de la main
+	 */
+	public Action prendreAction(String action)
 	{
 		for (Action a : main) {
 			if (a.getNom().equals(action)){
@@ -59,12 +76,37 @@ public class Joueur {
 		return null;
 	}
 	
-	public Action getAction(Action action)
+	/**
+	 * Supprimer une action de la main du joueur
+	 * @param action a récupérer
+	 * @return l'action suppérimée de la main
+	 */
+	public Action prendreAction(Action action)
 	{
 		if(main.remove(action)) return action;	
 		return null;
 	}
 	
+	/**
+	 * Récupère une action dans la main du joueur
+	 * @param nom de l'action a récupérer
+	 * @return action 
+	 */
+	public Action getAction(String action)
+	{
+		for (Action a : main) {
+			if (a.getNom().equals(action)){
+				return a;
+			}	
+		}
+		return null;
+	}
+	
+	/**
+	 * Vérifie si une action existe dan la main d'un joueur
+	 * @param action
+	 * @return vrai ou faux
+	 */
 	public boolean aLAction(String action)
 	{
 		for (Action a : main) {
@@ -75,6 +117,11 @@ public class Joueur {
 		return false;
 	}
 	
+	/**
+	 * Retourne le nombre d'occurences d'une action dans la main du joueur
+	 * @param action a rechercher
+	 * @return nombre d'occurences
+	 */
 	public int nbAction(String action) {
 		int res = 0;
 		for (Action a : main) {
@@ -83,6 +130,10 @@ public class Joueur {
 		return res;
 	}
 	
+	/**
+	 * Défausse une carte au hasard
+	 * @return action défaussée
+	 */
 	public Action defausserRand()
 	{
 		if (main.isEmpty()!=true)
@@ -94,57 +145,101 @@ public class Joueur {
 			return null;
 	}
 	
+	/**
+	 * Enleve des points de vie au joueur
+	 * @param nbPV nombre de points de vie à enlever
+	 */
 	public void enleverPV(int nbPV){
 		pdv-=nbPV;
 	}
 
+	/**
+	 * Ajouter des points de vie au joueur
+	 * @param nbPV nombre de point de vie à ajouter
+	 */
 	public void ajouterPV(int nbPV){
 		if(pdv<pdvmax)	pdv+=nbPV;
 	}
 	
+	/**
+	 * Getter de la distance bonus d'un joueur
+	 * @return distance
+	 */
 	public int getDistance() {
 		return bonusDistance;
 	}
+	
+	/**
+	 * Getter portée d'un joueur
+	 * @return portée
+	 */
 	public int getPortee() {
 		return portee;
 	}
 
+	/**
+	 * Getter nb points de vie d'un joueur
+	 * @return points de vie
+	 */
 	public int getPdv() {
 		return pdv;
 	}
 
+	/**
+	 * Getter nb points de vie max d'un joueur
+	 * @return nb points de vie max
+	 */
 	public int getPdvmax() {
 		return pdvmax;
 	}
 
+	/**
+	 * Getter du booléen permettant de savoir si un joueur a tiré ou pas
+	 * @return a tiré?
+	 */
 	public boolean aTire() {
 		return aTire;
 	}
 
+	/**
+	 * Getter main du joueur
+	 * @return main du joueur
+	 */
 	public ArrayList<Action> getMain() {
 		return main;
 	}
 
-
+	/**
+	 * Setter portée du joueur
+	 * @param portee
+	 */
 	public void setPortee(int portee) {
 		this.portee = portee;
 	}
 
-
+	/**
+	 * Setter distance bonus d'un joueur
+	 * @param distance
+	 */
 	public void setDistance(int distance) {
 		this.bonusDistance = distance;
 	}
 
+	/**
+	 * Permet de savoir si le joueur a la capacité de tirer à l'infini
+	 * @return tire illimité?
+	 */
 	public boolean isTireIllimite() {
 		return tireIllimite;
 	}
 
-
+	/**
+	 * Permet de modifier si le joueur est limité à un bang par tour ou non
+	 * @param tire Illimite?
+	 */
 	public void setTireIllimite(boolean tireIllimite) {
 		this.tireIllimite = tireIllimite;
 	}
-
-
 
 	@Override
 	public String toString() {
@@ -152,29 +247,42 @@ public class Joueur {
 				+ role + "]";
 	}
 
+	/**
+	 * Getter personnage du joueur
+	 * @return personnage
+	 */
 	public Personnage getPerso() {
 		return perso;
 	}
 
+	/**
+	 * Getter Role du joueur
+	 * @return role du joueur
+	 */
 	public Role getRole() {
 		return role;
 	}
 
+	/**
+	 * Accesseur de tous les bonus dont le joueur dispose
+	 * @return bonus joués
+	 */
 	public ArrayList<ActionBonus> getBonus() {
 		return bonus;
 	}
 
+	/**
+	 * Setter des bonnus activés du joueur
+	 * @param bonus
+	 */
 	public void setBonus(ArrayList<ActionBonus> bonus) {
 		this.bonus = bonus;
 	}
-
-	public Arme getArme() {
-		return arme;
-	}
-
-	public void setArme(Action a) {
-		this.arme = (Arme) a;
-	}
+	
+	/**
+	 * Ajouter bonus au joueur
+	 * @param a
+	 */
 	public void ajouterBonus(ActionBonus a)
 	{
 		this.bonus.add(a);

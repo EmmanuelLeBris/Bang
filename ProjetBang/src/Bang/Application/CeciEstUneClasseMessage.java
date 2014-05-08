@@ -13,15 +13,15 @@ public class CeciEstUneClasseMessage {
 		-> faire une méthode test qui renvoie true si le joueur est déjà full pdv !
 		-> pour implémenter l'action rate ! -> pense à la méthode esquiver qui vérifie si on peut (du point de vue des cartes ) esquiver le coup
 		-> ensuite si le test est ok -> proposer à l'utilisateur si il veut ! (pouvoir ne veut pas dire forcement vouloir ^^)
-		
+
 		je re à 22 h30/23 h
-		
-		
+
+
 		18h15 -- 06/05/2014 !
 		Tout marche bien pour l'instant (test ok).
-		
-		
-		
+
+
+
 		 */
 
 	}

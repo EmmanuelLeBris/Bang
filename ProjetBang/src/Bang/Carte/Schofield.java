@@ -1,7 +1,9 @@
 package Bang.Carte;
 
 public class Schofield extends Arme {
-
+	/**
+	 * Constructeur de l'arme schofield
+	 */
 	public Schofield() {
 		super("Schofield","portee 2", 2);
 		// TODO Auto-generated constructor stub
@@ -14,6 +16,6 @@ public class Schofield extends Arme {
 	}
 
 
-	
+
 
 }

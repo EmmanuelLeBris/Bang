@@ -1,8 +1,12 @@
 package Bang.Carte;
 
 public class Rate extends ActionSurjoueur{
-
-	public Rate(String nom, String description) {
+	/**
+	 * Constructeur de l'action rate
+	 * @param nom 
+	 * @param description
+	 */
+	public Rate() {
 		super("Rate", "Permet d'esquiver un bang");
 	}
 

@@ -16,10 +16,16 @@ public class IA extends Joueur {
 	private HashSet<Joueur> amis= new  HashSet<Joueur>();
 	private  HashSet<Joueur> ennemis= new  HashSet<Joueur>();
 
+	/**
+	 * Constructeur de joueur
+	 * @param perso personnage du joueur
+	 * @param role role du joueur
+	 */
 	public IA(Personnage perso, Role role) {
 		super(perso, role);
 
 	}
+
 	/**
 	 * Initialisation des amis et ennemis d'un joueur (un joueur est son propre amis)
 	 * @param participant tableau des joueurs participants
@@ -99,54 +105,58 @@ public class IA extends Joueur {
 	 * @return l'action à jouer
 	 */
 	public Action jouerAction(Jeu jeu)
-	{
-		Action meilleure;
-		
+	{		
 		boolean amisNeedHelp = true;
 		boolean peutTuerEnnemi = false;
-		
+
 		//SE BOOSTER
 		for(Action a : main){
 			if(a instanceof ActionBonus){
-				if(a instanceof Arme){
-					for(ActionBonus ab : bonus){
-						if(ab instanceof Arme && ((Arme) a).getPorteeBonus()>((Arme) ab).getPorteeBonus()) return getAction(a);
+				if(!bonus.contains(a)){
+					if(a instanceof Arme){
+						for(ActionBonus ab : bonus){
+							if(ab instanceof Arme && !ab.getNom().equals("Volcanic")){
+								if(a.getNom().equals("Volcanic")) return prendreAction(a);
+								else if(((Arme) a).getPorteeBonus()>((Arme) ab).getPorteeBonus()) return prendreAction(a);
+							}
+						}
 					}
+					else return prendreAction(a);
 				}
-				else return getAction(a);
 			}
 		}
-		
+
 		//FRAGILISER ENNEMIS
-		if(aLAction("Coup de foudre")) return getAction("Coup de foudre");
-			
+		if(aLAction("Coup de foudre")) return prendreAction("Coup de foudre");
+
 		//TAPER
 		for(Joueur j : ennemis){
 			if(j.getPdv()==1 || (tireIllimite && j.getPdv()<=nbAction("Bang")) && jeu.calculerDistance(this,j)<=portee) peutTuerEnnemi = true;
 		}
-		if(peutTuerEnnemi) return getAction("Bang");
-		
+		if(peutTuerEnnemi) return prendreAction("Bang");
+
 		//PIOCHER
-		if(aLAction("Convois")) return getAction("Convois");
-		if(aLAction("Magasin")) return getAction("Magasin");
-		
+		if(aLAction("Convois")) return prendreAction("Convois");
+		if(aLAction("Magasin")) return prendreAction("Magasin");
+
 		//SOINS
-			//Alliers en situation urgente
+		//Alliers en situation urgente
 		for(Joueur j : amis){
 			if(j.getPdv()==1) amisNeedHelp = false;
 		}
-		if(aLAction("Saloon") && amisNeedHelp) return getAction("Saloon");
-			
-			//Soi meme (et alliers si besoin)	
+		if(aLAction("Saloon") && amisNeedHelp) return prendreAction("Saloon");
+
+		//Soi meme (et alliers si besoin)	
 		if(pdv<pdvmax){
 			if(aLAction("Saloon")){
 				for(Joueur j : amis){
 					if(j.getPdv()==j.getPdvmax()) amisNeedHelp = false;
 				}
-				if(amisNeedHelp || (!aLAction("Biere") && pdv<=2)) return getAction("Saloon"); //Saloon que si les alliés en ont besoin ou on est proche de la mort
+				if(amisNeedHelp || (!aLAction("Biere") && pdv<=2)) return prendreAction("Saloon"); //Saloon que si les alliés en ont besoin ou on est proche de la mort
 			}
-			if(aLAction("Biere")) return getAction("Biere");
+			if(aLAction("Biere")) return prendreAction("Biere");
 		}
-		
+
+		return getAction("Passer Tour");
 	}
 }

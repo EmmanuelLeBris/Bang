@@ -11,7 +11,10 @@ public class Jeu {
 	private ArrayList<Action> pioche = new ArrayList<Action>();
 	private ArrayList<Action> defausse = new ArrayList<Action>();
 	private ArrayList<Joueur> participants = new ArrayList<Joueur>();
-
+	/**
+	 * Initialisation d'une partie
+	 * @param personnage personnage choisi par le joueur
+	 */
 	public void Init(String personnage)
 	{
 		// Init Rôles
@@ -72,6 +75,7 @@ public class Jeu {
 		for(int i = 0; i<2; i++) this.pioche.add(new Volcanic());
 		for(int i = 0; i<3; i++) this.pioche.add(new Schofield());
 		for(int i = 0; i<25; i++) this.pioche.add(new Biere());
+		PasserTour passerTour = new PasserTour();
 		// -> reste à ajouter les bangs,rate (toutes les cartes actions)
 		// on mélange la pioche ;)
 		Collections.shuffle(pioche);
@@ -85,6 +89,7 @@ public class Jeu {
 		}
 
 		// ensuite on distribue carte par carte
+		for(Joueur j :participants) j.donnerAction(passerTour);
 		for (int l=0;l<4;l++)
 		{
 			for (int k=0;k<5;k++)
@@ -98,9 +103,11 @@ public class Jeu {
 		Joueur s = participants.get(0);
 		Action a = piocher();
 		s.donnerAction(a);
-
-
 	}
+	
+	/**
+	 * Fait un tour de jeu
+	 */
 	public void tourDeJeu()
 	{
 		for (int i=0; i<5;i++)
@@ -126,13 +133,17 @@ public class Jeu {
 					@SuppressWarnings("resource")
 					Scanner scanner = new Scanner(System.in);
 					String choix = scanner.nextLine();
-					Action actionchoix = s.getAction(choix);
+					Action actionchoix = s.prendreAction(choix);
 					this.faireAction(actionchoix, s);
 				}
 
 			}
 	}
 
+	/**
+	 * Pioche une carte dans la pioche
+	 * @return action piochée
+	 */
 	public Action piocher() {
 		Action a =null;
 		if (this.pioche.isEmpty()) //pioche vide ??
@@ -150,6 +161,11 @@ public class Jeu {
 		}
 		return a;
 	}
+	
+	/**
+	 * Vérifie si la partie est terminée
+	 * @return si je jeu est terminé
+	 */
 	public boolean finJeu() {
 		// sherif mort ? -> return true
 		// hors-la-loi et renegat mort ?-> return true
@@ -157,7 +173,12 @@ public class Jeu {
 		// sinon -> return false
 		return false;
 	}
-	// méthode permetant de gerer les actions
+
+	/**
+	 * Joue une action 
+	 * @param a action a faire
+	 * @param jCourant joueur qui demande l'action
+	 */
 	public void faireAction(Action a,Joueur jCourant)
 	{
 		String nomAction = a.getNom();
@@ -180,7 +201,7 @@ public class Jeu {
 						jCourant.getArme().enleveBonus(jCourant);
 						this.defausser(jCourant.getArme());
 					}
-					jCourant.setArme(a);
+					jCourant.setArme((Arme) a);
 					action.donBonus(jCourant);
 				}
 				else
@@ -216,6 +237,11 @@ public class Jeu {
 			}
 		}
 	}
+	
+	/**
+	 * Ajouter carte à la défausse
+	 * @param a action a défausser
+	 */
 	public void defausser(Action a)
 	{
 		this.defausse.add(a);

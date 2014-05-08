@@ -4,10 +4,12 @@ import Bang.Jeu.Joueur;
 
 public class Lunette extends ActionBonus {
 	private int porteeBonus = 1;
-
+	/**
+	 * Constructeur du bonus lunette
+	 */
 	public Lunette() {
 		super("Lunette","augmente de 1 la portee de votre arme");
-		
+
 	}
 
 	@Override
@@ -27,6 +29,6 @@ public class Lunette extends ActionBonus {
 		return "Lunette [porteeBonus=" + porteeBonus + ", nom=" + nom
 				+ ", description=" + description + "]";
 	}
-	
+
 
 }

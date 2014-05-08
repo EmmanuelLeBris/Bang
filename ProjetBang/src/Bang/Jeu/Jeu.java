@@ -104,7 +104,7 @@ public class Jeu {
 		Action a = piocher();
 		s.donnerAction(a);
 	}
-	
+
 	/**
 	 * Fait un tour de jeu
 	 */
@@ -161,7 +161,7 @@ public class Jeu {
 		}
 		return a;
 	}
-	
+
 	/**
 	 * Vérifie si la partie est terminée
 	 * @return si je jeu est terminé
@@ -185,30 +185,25 @@ public class Jeu {
 		if (a instanceof ActionBonus) // partie carte bonus -> 100 % implémenté
 		{
 			ActionBonus action = (ActionBonus) a;
-			boolean carteEquipee = false;
 
-			// Le bonus est déjà équipé?
-			for (ActionBonus ab : jCourant.getBonus())
-				if (ab.getNom().equals(nomAction)) carteEquipee=true;
-
-			if(carteEquipee) this.defausser(a); //on defausse donc la carte
+			if(jCourant.getBonus().contains(action)){
+				this.defausser(a); //on defausse donc la carte
+			}
 			else
 			{//On equipe le nouveau bonus
 				if (a instanceof Arme)
 				{//Si c'est une arme on remplace l'ancienne
-					if (jCourant.getArme()!=null)
-					{
-						jCourant.getArme().enleveBonus(jCourant);
-						this.defausser(jCourant.getArme());
+					for(ActionBonus ab : jCourant.getBonus()){
+						if(ab instanceof Arme){
+							ab.enleveBonus(jCourant);
+							jCourant.getBonus().remove(ab);
+							defausser(ab);
+						}
 					}
-					jCourant.setArme((Arme) a);
-					action.donBonus(jCourant);
 				}
-				else
-				{
-					action.donBonus(jCourant);
-					jCourant.ajouterBonus(action);
-				}
+				action.donBonus(jCourant);
+				jCourant.ajouterBonus(action);
+
 			}
 		}
 		else{
@@ -224,20 +219,20 @@ public class Jeu {
 			}
 			switch(nomAction){
 			case "Biere" : ((Biere)a).capacite(jCourant);
-				break;
+			break;
 			case "Magasin" : ((Magasin) a).capacite(this);
-				break;
+			break;
 			case "Convois" : ((Convois) a).capacite(jCourant, this);
-				break;
+			break;
 			case "Saloon" : ((Saloon) a).capacite(this);
-				break;
+			break;
 			case "Coup de foudre" : ((CoupDeFoudre) a).capacite(this, cible);
-				break;
+			break;
 			case "Bang" : ((Bang) a).capacite(this, cible, jCourant);
 			}
 		}
 	}
-	
+
 	/**
 	 * Ajouter carte à la défausse
 	 * @param a action a défausser
@@ -254,7 +249,7 @@ public class Jeu {
 	public ArrayList<Joueur> getParticipants() {
 		return participants;
 	}
-	
+
 	/**
 	 * Calcul la distance réelle pour un joueur afin d'atteindre l'autre joueur
 	 * @param j1 veut atteindre j2

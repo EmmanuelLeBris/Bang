@@ -15,7 +15,4 @@ public class Schofield extends Arme {
 				+ ", description=" + description + "]";
 	}
 
-
-
-
 }

@@ -25,6 +25,8 @@ public class Bang extends ActionSurAdversaire {
 			//A FAIRE oui non
 			//On défausse les cartes raté
 			for(int i =0; i<nbRate;i++) jeu.defausser(cible.prendreAction("Rate"));
+		}else{
+			cible.setPdv(cible.getPdv()-1);
 		}
 	}
 

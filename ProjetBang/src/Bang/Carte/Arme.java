@@ -25,17 +25,13 @@ public abstract class Arme extends ActionBonus {
 
 	@Override
 	public void donBonus(Joueur j) {
-		if (j.getPortee()==1)
-			j.setPortee(this.porteeBonus);
-		else
-			j.setPortee(this.porteeBonus+j.getPortee()-1);
+		j.setPortee(this.porteeBonus+j.getPortee()-1);
 
 	}
 
 	@Override
 	public void enleveBonus(Joueur j) {
 		j.setPortee(j.getPortee()-(this.porteeBonus-1));
-
 	}
 
 

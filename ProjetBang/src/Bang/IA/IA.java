@@ -84,8 +84,9 @@ public class IA extends Joueur {
 	 * @param a action jouée
 	 * @param joueur joueur qui a fait l'action
 	 * @param cible joueur cible de l'action
+	 * @param participant 
 	 */
-	public void notifierAction(Action a, Joueur joueur, Joueur cible){
+	public void notifierAction(Action a, Joueur joueur, Joueur cible, ArrayList<Joueur> participant){
 		if(a.getNom().equals("Bang")){
 			if(this.role.getNom().equals("ADJOINT") || this.role.getNom().equals("RENEGAT")){ // Ils n'ont rien à regarder sur leurs ennemis/amis
 				if(cible.equals(this)) ennemis.add(joueur);
@@ -96,6 +97,7 @@ public class IA extends Joueur {
 				amis.remove(cible);
 				ennemis.remove(cible);
 			}
+			udpateRelation(participant);
 		}
 	}
 
@@ -106,14 +108,23 @@ public class IA extends Joueur {
 	 */
 	public Action jouerAction(Jeu jeu)
 	{		
-		boolean amisNeedHelp = true;
+		boolean amisNeedHelp = false;
 		boolean peutTuerEnnemi = false;
+		System.out.println("Main :");
+		for(Action a : main){
+			System.out.println(a);
+		}
+		System.out.println("\nennemis : "+ennemis+"\namis : "+amis+"\n");
+
+		//PIOCHER
+		if(aLAction("Convois")) return prendreAction("Convois");
 
 		//SE BOOSTER
 		for(Action a : main){
 			if(a instanceof ActionBonus){
 				if(!bonus.contains(a)){
 					if(a instanceof Arme){
+						if(bonus.isEmpty()) return prendreAction(a);
 						for(ActionBonus ab : bonus){
 							if(ab instanceof Arme && !ab.getNom().equals("Volcanic")){
 								if(a.getNom().equals("Volcanic")) return prendreAction(a);
@@ -127,22 +138,21 @@ public class IA extends Joueur {
 		}
 
 		//FRAGILISER ENNEMIS
-		if(aLAction("Coup de foudre")) return prendreAction("Coup de foudre");
+		if(!ennemis.isEmpty() && aLAction("Coup de foudre")) return prendreAction("Coup de foudre");
 
 		//TAPER
-		for(Joueur j : ennemis){
-			if(j.getPdv()==1 || (tireIllimite && j.getPdv()<=nbAction("Bang")) && jeu.calculerDistance(this,j)<=portee) peutTuerEnnemi = true;
+		for(Joueur j : ennemis){ //On regarde si le joueur a e quoi tuer un ennemis
+			if(aLAction("Bang") && ((j.getPdv()==1 && !aTire) || (tireIllimite && j.getPdv()<=nbAction("Bang"))) && jeu.calculerDistance(this,j)<=portee) peutTuerEnnemi = true;
 		}
 		if(peutTuerEnnemi) return prendreAction("Bang");
 
 		//PIOCHER
-		if(aLAction("Convois")) return prendreAction("Convois");
 		if(aLAction("Magasin")) return prendreAction("Magasin");
 
 		//SOINS
 		//Alliers en situation urgente
 		for(Joueur j : amis){
-			if(j.getPdv()==1) amisNeedHelp = false;
+			if(j.getPdv()<=2 && !j.equals(this)) amisNeedHelp = true;
 		}
 		if(aLAction("Saloon") && amisNeedHelp) return prendreAction("Saloon");
 
@@ -150,13 +160,36 @@ public class IA extends Joueur {
 		if(pdv<pdvmax){
 			if(aLAction("Saloon")){
 				for(Joueur j : amis){
-					if(j.getPdv()==j.getPdvmax()) amisNeedHelp = false;
+					if(j.getPdv()<=j.getPdvmax() && !j.equals(this)) amisNeedHelp = true;
 				}
 				if(amisNeedHelp || (!aLAction("Biere") && pdv<=2)) return prendreAction("Saloon"); //Saloon que si les alliés en ont besoin ou on est proche de la mort
 			}
 			if(aLAction("Biere")) return prendreAction("Biere");
 		}
 
+		//TAPER
+		if(!ennemis.isEmpty() && aLAction("Bang") && !aTire) return prendreAction("Bang");
+
 		return getAction("Passer Tour");
+	}
+
+	public Joueur demanderCible(Action a, Jeu jeu) {
+		ArrayList<Joueur> ennemisPossibles = new ArrayList<>();
+		Joueur meilleurEnnemis = null, tmp;
+		for(Joueur j :ennemis)
+			if(portee-jeu.calculerDistance(this, j)>=0) ennemisPossibles.add(j);
+		if(!ennemisPossibles.isEmpty()){
+			meilleurEnnemis = ennemisPossibles.get(0);
+			for(int i = 1; i<ennemisPossibles.size(); i++) {
+				tmp = ennemisPossibles.get(i);
+				if(meilleurEnnemis.getPdv()<tmp.getPdv()) meilleurEnnemis = tmp;
+				else if(meilleurEnnemis.getPdv()==tmp.getPdv() && meilleurEnnemis.getBonus().size()==tmp.getBonus().size()) meilleurEnnemis = tmp;
+			}
+			return meilleurEnnemis;
+		}else{
+			for(Joueur j : jeu.getParticipants())
+				if(!amis.contains(j)) return j;
+		}
+		return null;
 	}
 }

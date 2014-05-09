@@ -26,10 +26,26 @@ public class Role {
 
 	@Override
 	public String toString() {
-		return "Role [nom=" + nom + ", pdvBonus=" + pdvBonus + ", description="
+		return "[nom=" + nom + ", pdvBonus=" + pdvBonus + ", description="
 				+ description + "]";
 	}
-	
-		
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Role other = (Role) obj;
+		if (nom == null) {
+			if (other.nom != null)
+				return false;
+		} else if (!nom.equals(other.nom))
+			return false;
+		return true;
+	}
+	
+	
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import Bang.Carte.Action;
 import Bang.Carte.ActionBonus;
-import Bang.Carte.Arme;
 
 public class Joueur {
 	protected int bonusDistance = 0;
@@ -31,6 +30,9 @@ public class Joueur {
 		this.pdvmax = perso.getPdv()+role.getPdvBonus();
 
 		if (this.perso.getNom().equals("ROSE DOOLAN")) portee++;
+		if (this.role.getNom().equals("SHERIF")){
+			pdv = ++pdvmax;
+		}
 	}
 
 	/**
@@ -138,7 +140,7 @@ public class Joueur {
 	{
 		if (main.isEmpty()!=true)
 		{
-			int indexrandom = (int) ((this.main.size()+1)*Math.random());
+			int indexrandom = (int) ((this.main.size())*Math.random());
 			return this.main.get(indexrandom);
 		}
 		else
@@ -243,8 +245,8 @@ public class Joueur {
 
 	@Override
 	public String toString() {
-		return "Joueur [portee=" + portee + ", perso=" + perso + ", role="
-				+ role + "]";
+		return  "perso=" + perso + ", role="
+				+ role + " portee=" + portee;
 	}
 
 	/**
@@ -318,5 +320,22 @@ public class Joueur {
 			return false;
 		return true;
 	}
+
+	/**
+	 * Setter de a Tire permet de savoir si un joueur a déjà tiré ou pas
+	 * @param booléen
+	 */
+	public void setATire(boolean b) {
+		aTire = b;		
+	}
+	
+	/**
+	 * Setter de points de vie
+	 * @param booléen
+	 */
+	public void setPdv(int i) {
+		pdv = i;		
+	}
+	
 
 }

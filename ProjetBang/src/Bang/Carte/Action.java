@@ -30,6 +30,11 @@ public abstract class Action {
 		return nom;
 	}
 
+	@Override
+	public String toString() {
+		return "[ nom=" + nom + ", description=" + description + "]";
+	}
+
 
 
 }

@@ -12,18 +12,14 @@ public class Volcanic extends Arme {
 	}
 	@Override
 	public void donBonus(Joueur j) {
-		if (j.getPortee()==1)
-			j.setPortee(this.porteeBonus);
-		else
-			j.setPortee(this.porteeBonus+j.getPortee()-1);
-
+		j.setPortee(this.porteeBonus+j.getPortee()-1);
 		j.setTireIllimite(true);
 
 	}
 
 	@Override
 	public void enleveBonus(Joueur j) {
-		j.setPortee(1);
+		j.setPortee(j.getPortee()-porteeBonus+1);
 		j.setTireIllimite(false);
 	}
 	@Override

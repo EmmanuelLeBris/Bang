@@ -26,8 +26,27 @@ public class Personnage {
 
 	@Override
 	public String toString() {
-		return "Personnage [nom=" + nom + ", pdv=" + pdv + ", description="
+		return "[ nom=" + nom + ", pdv=" + pdv + ", description="
 				+ description + "]";
-	}	
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Personnage other = (Personnage) obj;
+		if (nom == null) {
+			if (other.nom != null)
+				return false;
+		} else if (!nom.equals(other.nom))
+			return false;
+		return true;
+	}
+	
+	
 
 }

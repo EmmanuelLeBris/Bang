@@ -11,6 +11,7 @@ public class Jeu {
 	private ArrayList<Action> pioche = new ArrayList<Action>();
 	private ArrayList<Action> defausse = new ArrayList<Action>();
 	private ArrayList<Joueur> participants = new ArrayList<Joueur>();
+	private Joueur joueurHumain;
 	/**
 	 * Initialisation d'une partie
 	 * @param personnage personnage choisi par le joueur
@@ -50,46 +51,56 @@ public class Jeu {
 		Collections.shuffle(personnages);
 
 		// Init du personnage du joueur
-		Personnage persoJoueur;
+		Personnage persoJoueur = null;
 
-		if (personnage.equals("ROSE DOOLAN")) persoJoueur=roseDoolan;
-		else if (personnage.equals("BART CASSIDY")) persoJoueur=bartCassidy;
-		else if (personnage.equals("SUZY LAFAYETTE")) persoJoueur=suzyLafayette;
-		else if (personnage.equals("JESSE JONES")) persoJoueur=jesseJones;
-		else if (personnage.equals("SLAB LE FLINGUEUR")) persoJoueur=slabLeFlingueur;
+		for(Personnage p : personnages){
+			if(p.getNom().equals(personnage)) persoJoueur = p;
+		}
 		//Si le joueur n'a pas choisi de personnage on en tire un au hasard
-		else persoJoueur =  personnages.get((int)Math.random()*(1+personnages.size()));
+		if(persoJoueur == null) persoJoueur =  personnages.get((int)Math.random()*(1+personnages.size()));
 
 		personnages.remove(persoJoueur);
-		participants.add(new Joueur(persoJoueur,roles.get(4)));
+		participants.add(joueurHumain = new IA(persoJoueur,roles.get(4)));
 
 		// Init des personnages non humains
 		for(int i=0; i <4; i++)
-			this.participants.add(new Joueur(personnages.get(i),roles.get(i)));
+			this.participants.add(new IA(personnages.get(i),roles.get(i)));
 
 		// on ajoute les cartes dans la pioche (cf cahier des charges pour le nombre)
+		//Armes
 		for(int i = 0; i<3; i++) this.pioche.add(new Schofield());
-		for(int i = 0; i<2; i++) this.pioche.add(new Mustang());
-		for(int i = 0; i<2; i++) this.pioche.add(new Remington());
-		this.pioche.add(new Lunette());
 		for(int i = 0; i<2; i++) this.pioche.add(new Volcanic());
-		for(int i = 0; i<3; i++) this.pioche.add(new Schofield());
-		for(int i = 0; i<25; i++) this.pioche.add(new Biere());
+		for(int i = 0; i<2; i++) this.pioche.add(new Remington());
+
+		//Bonus
+		for(int i = 0; i<2; i++) this.pioche.add(new Mustang());
+		this.pioche.add(new Lunette());
+
+		// Cartes jouables
+		for(int i = 0; i<25; i++) this.pioche.add(new Bang());
+		for(int i = 0; i<12; i++) this.pioche.add(new Rate());
+		for(int i = 0; i<4; i++) this.pioche.add(new CoupDeFoudre());
+		for(int i = 0; i<6; i++) this.pioche.add(new Biere());
+		for(int i = 0; i<2; i++) this.pioche.add(new Convois());
+		for(int i = 0; i<2; i++) this.pioche.add(new Magasin());
+		this.pioche.add(new Saloon());
+
+		//Autre
 		PasserTour passerTour = new PasserTour();
-		// -> reste à ajouter les bangs,rate (toutes les cartes actions)
+
 		// on mélange la pioche ;)
 		Collections.shuffle(pioche);
 
 		// on detecte le shériff et on met en place les joueurs
-		int index = roles.indexOf(sherif);
+		int index = (roles.indexOf(sherif)+1)%5;
+
 		if (index!=0)
 		{
 			participants.add(0, participants.get(index));
-			participants.remove(index);
+			participants.remove(index+1);
 		}
 
 		// ensuite on distribue carte par carte
-		for(Joueur j :participants) j.donnerAction(passerTour);
 		for (int l=0;l<4;l++)
 		{
 			for (int k=0;k<5;k++)
@@ -99,6 +110,11 @@ public class Jeu {
 				s.donnerAction(a);
 			}
 		}
+		//Autre 
+		for(Joueur j :participants){
+			j.donnerAction(passerTour);
+			if(j instanceof IA) ((IA) j).init(participants);
+		}
 		// une carte en plus pour le shériff ;)
 		Joueur s = participants.get(0);
 		Action a = piocher();
@@ -106,38 +122,72 @@ public class Jeu {
 	}
 
 	/**
-	 * Fait un tour de jeu
+	 * Lance les tours de jeu
 	 */
-	public void tourDeJeu()
+	public void lancerJeu()
 	{
-		for (int i=0; i<5;i++)
-			if (!finJeu())
-			{
-				System.out.println("Début tour joueur"+i);
-				Joueur s=this.participants.get(i);
-				/*Action a = Piocher();
-				s.donnerAction(a);
-				a = Piocher();
-				s.donnerAction(a);
-				 */
-				if (s instanceof IA)
+		Action a;
+		Joueur jCourant;
+		while(!finJeu()){
+			for (int i=0; i<5;i++)
+				if (!finJeu())
 				{
-					// technique particulière
-				}
-				else
-				{
-					System.out.println(s.getRole().getNom());
-					System.out.println(s.getMain());
-					System.out.println("yop man ! Quelle carte ?");
+					jCourant = this.participants.get(i);
 
-					@SuppressWarnings("resource")
-					Scanner scanner = new Scanner(System.in);
-					String choix = scanner.nextLine();
-					Action actionchoix = s.prendreAction(choix);
-					this.faireAction(actionchoix, s);
-				}
+					//PIOCHE
+					if(jCourant.getRole().getNom().equals("JESSE JONES")){
+						//A FAIRE Demander si il veut piocher la carte dans la main d'un joueur ou pas.
+					}else{
+						a = piocher();
+						jCourant.donnerAction(a);
+					}
+					a = piocher();
+					jCourant.donnerAction(a);
 
-			}
+					Joueur cible= null;
+					do{
+						System.out.println("Tour joueur "+i+", "+jCourant);
+						//On demande l'action à jouer
+						if (jCourant instanceof IA)
+						{
+							a = ((IA) jCourant).jouerAction(this);
+							System.out.println("Carte jouée : "+a);
+							
+							//On demande la cible si il faut
+							if(a instanceof ActionSurAdversaire){
+								cible = ((IA) jCourant).demanderCible(a, this);
+							}
+						}
+						else
+						{
+							System.out.println("yop man ! Quelle carte ?");
+
+							@SuppressWarnings("resource")
+							Scanner scanner = new Scanner(System.in);
+							String choix = scanner.nextLine();
+							a = jCourant.prendreAction(choix);
+							
+							//On demande la cible si il faut
+							if(a instanceof ActionSurAdversaire){
+								System.out.println("Choisir un joueur cible : ");
+								@SuppressWarnings("resource")
+								Scanner scan = new Scanner(System.in);
+								String ch = scan.nextLine();
+								for(Joueur j : participants){
+									if(j.getPerso().getNom().equals(ch)) cible=j; 
+								}
+							}
+						}
+						this.faireAction(a, jCourant,cible);
+
+					}while(!a.getNom().equals("Passer Tour"));
+					jCourant.setATire(false);
+					//Update des amis et ennemis
+					for(Joueur j :participants){
+						if(j instanceof IA) ((IA) j).notifierAction(a, jCourant, cible, participants);
+					}
+				}
+		}
 	}
 
 	/**
@@ -145,7 +195,7 @@ public class Jeu {
 	 * @return action piochée
 	 */
 	public Action piocher() {
-		Action a =null;
+		Action a = null;
 		if (this.pioche.isEmpty()) //pioche vide ??
 		{
 			this.pioche.addAll(defausse);  // on copie !
@@ -167,10 +217,36 @@ public class Jeu {
 	 * @return si je jeu est terminé
 	 */
 	public boolean finJeu() {
-		// sherif mort ? -> return true
-		// hors-la-loi et renegat mort ?-> return true
-		// tout le monde sauf renegat ? -> return true
-		// sinon -> return false
+		if(joueurHumain.getPdv()<=0){
+			System.out.println("Perdu!");
+			return true;
+		}
+
+		boolean sherifMort = false;
+		boolean adjointMort = false;
+		boolean renegatMort = false;
+		int nbHLMort = 0;
+		for(Joueur j : participants){
+			if(j.getPdv()<=0){
+				if(j.getRole().getNom().equals("Sherif")) sherifMort = true;
+				else if(j.getRole().getNom().equals("Renegat")) renegatMort = true;
+				else if(j.getRole().getNom().equals("Adjoint")) adjointMort = true;
+				else nbHLMort++;
+			}	
+		}
+		if(sherifMort){
+			if(joueurHumain.getRole().getNom().equals("Renegat")) System.out.println("Perdu!");
+			else System.out.println("Gagné!");
+			return true;
+		}
+		if(nbHLMort==2 && renegatMort){
+			System.out.println("Gagné!");
+			return true;
+		}
+		if(nbHLMort==2 && sherifMort && adjointMort){
+			System.out.println("Gagné!");
+			return true;
+		}
 		return false;
 	}
 
@@ -179,9 +255,10 @@ public class Jeu {
 	 * @param a action a faire
 	 * @param jCourant joueur qui demande l'action
 	 */
-	public void faireAction(Action a,Joueur jCourant)
+	public void faireAction(Action a,Joueur jCourant, Joueur cible)
 	{
 		String nomAction = a.getNom();
+
 		if (a instanceof ActionBonus) // partie carte bonus -> 100 % implémenté
 		{
 			ActionBonus action = (ActionBonus) a;
@@ -193,13 +270,16 @@ public class Jeu {
 			{//On equipe le nouveau bonus
 				if (a instanceof Arme)
 				{//Si c'est une arme on remplace l'ancienne
-					for(ActionBonus ab : jCourant.getBonus()){
+					ArrayList<ActionBonus> bonus = jCourant.getBonus();
+					ActionBonus aSuppr = null;
+					for(ActionBonus ab : bonus){
 						if(ab instanceof Arme){
 							ab.enleveBonus(jCourant);
-							jCourant.getBonus().remove(ab);
+							aSuppr = ab;
 							defausser(ab);
 						}
 					}
+					if(aSuppr!=null) bonus.remove(aSuppr);
 				}
 				action.donBonus(jCourant);
 				jCourant.ajouterBonus(action);
@@ -207,16 +287,6 @@ public class Jeu {
 			}
 		}
 		else{
-			Joueur cible = null;
-			if(a instanceof ActionSurAdversaire){
-				System.out.println("Choisir un joueur cible : ");
-				@SuppressWarnings("resource")
-				Scanner scanner = new Scanner(System.in);
-				String choix = scanner.nextLine();
-				for(Joueur j : participants){
-					if(j.getPerso().getNom().equals(choix)) cible=j; 
-				}
-			}
 			switch(nomAction){
 			case "Biere" : ((Biere)a).capacite(jCourant);
 			break;
@@ -228,8 +298,15 @@ public class Jeu {
 			break;
 			case "Coup de foudre" : ((CoupDeFoudre) a).capacite(this, cible);
 			break;
-			case "Bang" : ((Bang) a).capacite(this, cible, jCourant);
+			case "Bang" : 
+				if(!jCourant.aTire()){
+					((Bang) a).capacite(this, cible, jCourant);
+					jCourant.setATire(true);
+				}
+				break;
 			}
+
+			defausser(a);
 		}
 	}
 

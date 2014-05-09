@@ -10,6 +10,7 @@ import Bang.IA.IA;
 public class Jeu {
 	private ArrayList<Action> pioche = new ArrayList<Action>();
 	private ArrayList<Action> defausse = new ArrayList<Action>();
+	private ArrayList<Joueur> joueursEnJeu = new ArrayList<Joueur>();
 	private ArrayList<Joueur> participants = new ArrayList<Joueur>();
 	private Joueur joueurHumain;
 	/**
@@ -18,6 +19,8 @@ public class Jeu {
 	 */
 	public void Init(String personnage)
 	{
+		Action a;
+		Joueur tmp;
 		// Init Rôles
 		Role sherif = new Role("SHERIF",1,"Tuez tous les Hors-la-loi et le Renégat !");
 		Role adjoint = new Role("ADJOINT",0,"Protegez le Shérif et tuez tous les Hors-la-loi et le Renégat !");
@@ -60,11 +63,11 @@ public class Jeu {
 		if(persoJoueur == null) persoJoueur =  personnages.get((int)Math.random()*(1+personnages.size()));
 
 		personnages.remove(persoJoueur);
-		participants.add(joueurHumain = new IA(persoJoueur,roles.get(4)));
+		joueursEnJeu.add(joueurHumain = new IA(persoJoueur,roles.get(4)));
 
 		// Init des personnages non humains
 		for(int i=0; i <4; i++)
-			this.participants.add(new IA(personnages.get(i),roles.get(i)));
+			this.joueursEnJeu.add(new IA(personnages.get(i),roles.get(i)));
 
 		// on ajoute les cartes dans la pioche (cf cahier des charges pour le nombre)
 		//Armes
@@ -96,8 +99,8 @@ public class Jeu {
 
 		if (index!=0)
 		{
-			participants.add(0, participants.get(index));
-			participants.remove(index+1);
+			joueursEnJeu.add(0, joueursEnJeu.get(index));
+			joueursEnJeu.remove(index+1);
 		}
 
 		// ensuite on distribue carte par carte
@@ -105,20 +108,29 @@ public class Jeu {
 		{
 			for (int k=0;k<5;k++)
 			{
-				Joueur s=this.participants.get(k);
-				Action a = piocher();
-				s.donnerAction(a);
+				tmp=this.joueursEnJeu.get(k);
+				try {
+					a = piocher();
+					tmp.donnerAction(a);
+				} catch (PlusDeCartesException e) {
+					e.getMessage();
+				}
 			}
 		}
 		//Autre 
-		for(Joueur j :participants){
+		for(Joueur j :joueursEnJeu){
 			j.donnerAction(passerTour);
-			if(j instanceof IA) ((IA) j).init(participants);
+			if(j instanceof IA) ((IA) j).init(joueursEnJeu);
 		}
 		// une carte en plus pour le shériff ;)
-		Joueur s = participants.get(0);
-		Action a = piocher();
-		s.donnerAction(a);
+		tmp = joueursEnJeu.get(0);
+		try {
+			a = piocher();
+			tmp.donnerAction(a);
+		} catch (PlusDeCartesException e) {
+			e.getMessage();
+		}
+		participants.addAll(joueursEnJeu);
 	}
 
 	/**
@@ -127,35 +139,45 @@ public class Jeu {
 	public void lancerJeu()
 	{
 		Action a;
-		Joueur jCourant;
 		while(!finJeu()){
-			for (int i=0; i<5;i++)
-				if (!finJeu())
+			for (Joueur joueurCourant : participants){
+				if (!finJeu() && joueursEnJeu.contains(joueurCourant)) //Si le joueur est encore en jeu
 				{
-					jCourant = this.participants.get(i);
-
 					//PIOCHE
-					if(jCourant.getRole().getNom().equals("JESSE JONES")){
+					if(joueurCourant.getRole().getNom().equals("JESSE JONES")){
 						//A FAIRE Demander si il veut piocher la carte dans la main d'un joueur ou pas.
+						try {
+							a = piocher();
+							joueurCourant.donnerAction(a);
+						} catch (PlusDeCartesException e) {
+							System.out.println(e.getMessage());
+						}
 					}else{
-						a = piocher();
-						jCourant.donnerAction(a);
+						try {
+							a = piocher();
+							joueurCourant.donnerAction(a);
+						} catch (PlusDeCartesException e) {
+							System.out.println(e.getMessage());
+						}
+
 					}
-					a = piocher();
-					jCourant.donnerAction(a);
+					try {
+						a = piocher();
+						joueurCourant.donnerAction(a);
+					} catch (PlusDeCartesException e) {
+						System.out.println(e.getMessage());
+					}
 
 					Joueur cible= null;
+					System.out.println("\n\n /////////////TOUR "+joueurCourant);
 					do{
-						System.out.println("Tour joueur "+i+", "+jCourant);
 						//On demande l'action à jouer
-						if (jCourant instanceof IA)
+						if (joueurCourant instanceof IA)
 						{
-							a = ((IA) jCourant).jouerAction(this);
-							System.out.println("Carte jouée : "+a);
-							
-							//On demande la cible si il faut
+							a = ((IA) joueurCourant).jouerAction(this,piocheVide());
+							//On demande la cible si il y en a une
 							if(a instanceof ActionSurAdversaire){
-								cible = ((IA) jCourant).demanderCible(a, this);
+								cible = ((IA) joueurCourant).demanderCible(a, this);
 							}
 						}
 						else
@@ -165,39 +187,58 @@ public class Jeu {
 							@SuppressWarnings("resource")
 							Scanner scanner = new Scanner(System.in);
 							String choix = scanner.nextLine();
-							a = jCourant.prendreAction(choix);
-							
+							a = joueurCourant.prendreAction(choix);
+
 							//On demande la cible si il faut
 							if(a instanceof ActionSurAdversaire){
 								System.out.println("Choisir un joueur cible : ");
 								@SuppressWarnings("resource")
 								Scanner scan = new Scanner(System.in);
-								String ch = scan.nextLine();
-								for(Joueur j : participants){
-									if(j.getPerso().getNom().equals(ch)) cible=j; 
+								String nomEnnemis = scan.nextLine();
+								for(Joueur j : joueursEnJeu){
+									if(j.getPerso().getNom().equals(nomEnnemis)) cible=j; 
 								}
 							}
 						}
-						this.faireAction(a, jCourant,cible);
+						
+						System.out.println("\tCarte jouée : "+a);
+						
+						//Update des amis et ennemis et des joueurs en jeu
+						for(Joueur j :participants){
+							if(j.getPdv()<=0) joueursEnJeu.remove(j);
+						}
+						for(Joueur j :joueursEnJeu){
+							if(j instanceof IA) ((IA) j).notifierAction(a, joueurCourant, cible, joueursEnJeu);
+						}
+						if(!a.getNom().equals("Passer Tour"))
+							this.faireAction(a, joueurCourant,cible);
+						else break;
 
-					}while(!a.getNom().equals("Passer Tour"));
-					jCourant.setATire(false);
-					//Update des amis et ennemis
-					for(Joueur j :participants){
-						if(j instanceof IA) ((IA) j).notifierAction(a, jCourant, cible, participants);
-					}
+					}while(true);
+					joueurCourant.setATire(false);
 				}
+			}
 		}
+	}
+
+	/**
+	 * Permet de savoir si la pioche est vide
+	 * @return piocheVide
+	 */
+	private boolean piocheVide() {
+		return pioche.size()+defausse.size()<joueursEnJeu.size();
 	}
 
 	/**
 	 * Pioche une carte dans la pioche
 	 * @return action piochée
+	 * @throws PlusDeCartesException 
 	 */
-	public Action piocher() {
+	public Action piocher() throws PlusDeCartesException {
 		Action a = null;
 		if (this.pioche.isEmpty()) //pioche vide ??
 		{
+			if(defausse.isEmpty()) throw new PlusDeCartesException();
 			this.pioche.addAll(defausse);  // on copie !
 			this.defausse.removeAll(defausse); // on supprime la défausse !
 			Collections.shuffle(pioche); // on mélange la pioche
@@ -321,10 +362,15 @@ public class Jeu {
 
 	@Override
 	public String toString() {
-		return "Jeu [participants=" + participants + "]";
+		return "Jeu [participants=" + joueursEnJeu + "]";
 	}
-	public ArrayList<Joueur> getParticipants() {
-		return participants;
+
+	/**
+	 * Donne les joueurs encore en jeu.
+	 * @return
+	 */
+	public ArrayList<Joueur> getJoueursEnJeu() {
+		return joueursEnJeu;
 	}
 
 	/**
@@ -335,7 +381,7 @@ public class Jeu {
 	 */
 	public int calculerDistance(Joueur j1, Joueur j2) {
 		int plusCourteD = 2;
-		if(participants.indexOf(j1)-participants.indexOf(j2)==1) plusCourteD = 1;
+		if(joueursEnJeu.indexOf(j1)-joueursEnJeu.indexOf(j2)==1) plusCourteD = 1;
 		return (plusCourteD+j2.getDistance());
 	}
 

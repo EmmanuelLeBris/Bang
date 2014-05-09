@@ -86,9 +86,9 @@ public class IA extends Joueur {
 	 * @param cible joueur cible de l'action
 	 * @param participant 
 	 */
-	public void notifierAction(Action a, Joueur joueur, Joueur cible, ArrayList<Joueur> participant){
+	public void notifierAction(Action a, Joueur joueur, Joueur cible, ArrayList<Joueur> joueursEnJeu){
 		if(a.getNom().equals("Bang")){
-			if(this.role.getNom().equals("ADJOINT") || this.role.getNom().equals("RENEGAT")){ // Ils n'ont rien à regarder sur leurs ennemis/amis
+			if(!this.role.getNom().equals("ADJOINT") && !this.role.getNom().equals("RENEGAT")){ // Ils n'ont rien à regarder sur leurs ennemis/amis
 				if(cible.equals(this)) ennemis.add(joueur);
 				else if(amis.contains(cible)) addEnnemis(joueur);
 				else if(amis.contains(joueur)) addEnnemis(cible);
@@ -97,7 +97,7 @@ public class IA extends Joueur {
 				amis.remove(cible);
 				ennemis.remove(cible);
 			}
-			udpateRelation(participant);
+			udpateRelation(joueursEnJeu);
 		}
 	}
 
@@ -106,18 +106,14 @@ public class IA extends Joueur {
 	 * @param jeu jeu en cours
 	 * @return l'action à jouer
 	 */
-	public Action jouerAction(Jeu jeu)
-	{		
+	public Action jouerAction(Jeu jeu, boolean piocheVide)
+	{	
 		boolean amisNeedHelp = false;
 		boolean peutTuerEnnemi = false;
-		System.out.println("Main :");
-		for(Action a : main){
-			System.out.println(a);
-		}
-		System.out.println("\nennemis : "+ennemis+"\namis : "+amis+"\n");
+		System.out.println("\tennemis : "+ennemis+"\n\tamis : "+amis+"\n");
 
 		//PIOCHER
-		if(aLAction("Convois")) return prendreAction("Convois");
+		if(aLAction("Convois") && !piocheVide) return prendreAction("Convois");
 
 		//SE BOOSTER
 		for(Action a : main){
@@ -147,7 +143,7 @@ public class IA extends Joueur {
 		if(peutTuerEnnemi) return prendreAction("Bang");
 
 		//PIOCHER
-		if(aLAction("Magasin")) return prendreAction("Magasin");
+		if(aLAction("Magasin") && !piocheVide) return prendreAction("Magasin");
 
 		//SOINS
 		//Alliers en situation urgente
@@ -172,7 +168,13 @@ public class IA extends Joueur {
 
 		return getAction("Passer Tour");
 	}
-
+	
+	/**
+	 * Demander l'action a faire
+	 * @param a action
+	 * @param jeu partie en cours
+	 * @return joueur à cibler
+	 */
 	public Joueur demanderCible(Action a, Jeu jeu) {
 		ArrayList<Joueur> ennemisPossibles = new ArrayList<>();
 		Joueur meilleurEnnemis = null, tmp;
@@ -187,7 +189,7 @@ public class IA extends Joueur {
 			}
 			return meilleurEnnemis;
 		}else{
-			for(Joueur j : jeu.getParticipants())
+			for(Joueur j : jeu.getJoueursEnJeu())
 				if(!amis.contains(j)) return j;
 		}
 		return null;

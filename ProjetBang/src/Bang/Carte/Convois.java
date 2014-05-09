@@ -2,6 +2,7 @@ package Bang.Carte;
 
 import Bang.Jeu.Jeu;
 import Bang.Jeu.Joueur;
+import Bang.Jeu.PlusDeCartesException;
 
 public class Convois extends ActionSurjoueur {
 	/**
@@ -17,8 +18,16 @@ public class Convois extends ActionSurjoueur {
 	 * @param jeu jeu
 	 */
 	public void capacite(Joueur j, Jeu jeu){
-		j.donnerAction(jeu.piocher());
-		j.donnerAction(jeu.piocher());
+		try {
+			j.donnerAction(jeu.piocher());
+		} catch (PlusDeCartesException e) {
+			e.getMessage();
+		}
+		try {
+			j.donnerAction(jeu.piocher());
+		} catch (PlusDeCartesException e) {
+			e.getMessage();
+		}
 	}
 
 }

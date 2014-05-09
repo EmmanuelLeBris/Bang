@@ -16,7 +16,6 @@ public class Joueur {
 	protected boolean tireIllimite = false;
 	protected Personnage perso;
 	protected Role role;
-	protected boolean fintour=false;
 
 	/**
 	 * Constructeur d'un joueur
@@ -51,15 +50,10 @@ public class Joueur {
 	 */
 	public boolean peutEsquiver(int nombreRateRequis) // capable d'esquiver
 	{
-		boolean resultat= false;
-		for(int i=0;i<nombreRateRequis;i++)
-		{
-			if(this.prendreAction("Rate")!= null)
-				resultat= true;
-			else
-				resultat= false;
-		}
-		return resultat;
+		int nbRate = 0;
+		for(Action a : main)
+			if(a.getNom().equals("Rate")) nbRate++;
+		return nbRate>=nombreRateRequis;
 	}
 	
 	/**
@@ -245,8 +239,9 @@ public class Joueur {
 
 	@Override
 	public String toString() {
-		return  "perso=" + perso + ", role="
-				+ role + " portee=" + portee;
+		return perso.getNom()+" "+role.getNom()+" bonusDistance=" + bonusDistance + ", portee=" + portee
+				+ ", pdv=" + pdv + ", pdvmax=" + pdvmax + ", tireIllimite="
+				+ tireIllimite;
 	}
 
 	/**
@@ -337,5 +332,5 @@ public class Joueur {
 		pdv = i;		
 	}
 	
-
+	
 }

@@ -31,8 +31,9 @@ public abstract class Action {
 	}
 
 	@Override
-	public String toString() {
+	public String toString() {/*
 		return "[ nom=" + nom + ", description=" + description + "]";
+		*/return nom;
 	}
 
 

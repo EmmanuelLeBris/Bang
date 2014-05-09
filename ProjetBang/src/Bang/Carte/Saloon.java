@@ -16,7 +16,7 @@ public class Saloon extends ActionSurjoueur {
 	 * @param jeu jeu
 	 */
 	public void capacite(Jeu jeu){
-		for(Joueur j : jeu.getParticipants()){
+		for(Joueur j : jeu.getJoueursEnJeu()){
 			j.ajouterPV(1);
 		}
 	}

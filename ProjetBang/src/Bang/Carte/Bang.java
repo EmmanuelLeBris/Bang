@@ -18,7 +18,7 @@ public class Bang extends ActionSurAdversaire {
 	 * @param jCourant joueur qui donne la carte
 	 */
 	public void capacite(Jeu jeu, Joueur cible, Joueur jCourant) {
-		System.out.println("BANG : "+cible.getRole().getNom()+"->"+cible.getRole().getNom());
+		System.out.println("BANG : "+jCourant.getRole().getNom()+"->"+cible.getRole().getNom());
 		int nbRate = 1;
 		if(jCourant.getPerso().getNom().equals("SLAB LE FLINGUEUR")) nbRate++;
 		if(cible.peutEsquiver(nbRate)){

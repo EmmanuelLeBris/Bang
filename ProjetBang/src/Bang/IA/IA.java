@@ -69,13 +69,13 @@ public class IA extends Joueur {
 	 * IA pour detecter les amis et les ennemis
 	 * @param participant joueurs encore en jeu
 	 */
-	public void udpateRelation(ArrayList<Joueur> participant)
+	public void udpateRelation(ArrayList<Joueur> joueursEnJeu)
 	{
 		if(this.role.getNom().equals("SHERIF") || this.role.getNom().equals("HORS-LA-LOI")){ // Les autres connaissent déjà tous les alliés et ennemis
 			if(amis.size()>1 && ennemis.size()!=3) //Si il connait son allié et pas tous ses ennemis
-				for (Joueur joueur : participant) if (!amis.contains(joueur)) ennemis.add(joueur);
+				for (Joueur joueur : joueursEnJeu) if (!amis.contains(joueur)) ennemis.add(joueur);
 			if(ennemis.size()== 3) //Si il connait ses ennemis et pas son allié
-				for (Joueur joueur : participant) if (!ennemis.contains(joueur)) amis.add(joueur);
+				for (Joueur joueur : joueursEnJeu) if (!ennemis.contains(joueur)) amis.add(joueur);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class IA extends Joueur {
 		}
 
 		//FRAGILISER ENNEMIS
-		if(!ennemis.isEmpty() && aLAction("Coup de foudre")) return prendreAction("Coup de foudre");
+		if(!ennemis.isEmpty() && aLAction("Coup de foudre") && !piocheVide) return prendreAction("Coup de foudre");
 
 		//TAPER
 		for(Joueur j : ennemis){ //On regarde si le joueur a e quoi tuer un ennemis

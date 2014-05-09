@@ -200,19 +200,24 @@ public class Jeu {
 								}
 							}
 						}
-						
+
 						System.out.println("\tCarte jouée : "+a);
+
+						//On fait l'action
 						
+						if(!a.getNom().equals("Passer Tour"))
+							this.faireAction(a, joueurCourant,cible);
+						else break;
+						if(finJeu()) System.exit(0);
+
 						//Update des amis et ennemis et des joueurs en jeu
 						for(Joueur j :participants){
 							if(j.getPdv()<=0) joueursEnJeu.remove(j);
 						}
+						System.out.println("Encore en jeu : " + joueursEnJeu);
 						for(Joueur j :joueursEnJeu){
 							if(j instanceof IA) ((IA) j).notifierAction(a, joueurCourant, cible, joueursEnJeu);
 						}
-						if(!a.getNom().equals("Passer Tour"))
-							this.faireAction(a, joueurCourant,cible);
-						else break;
 
 					}while(true);
 					joueurCourant.setATire(false);
@@ -269,14 +274,15 @@ public class Jeu {
 		int nbHLMort = 0;
 		for(Joueur j : participants){
 			if(j.getPdv()<=0){
-				if(j.getRole().getNom().equals("Sherif")) sherifMort = true;
-				else if(j.getRole().getNom().equals("Renegat")) renegatMort = true;
-				else if(j.getRole().getNom().equals("Adjoint")) adjointMort = true;
+				if(j.getRole().getNom().equals("SHERIF")) sherifMort = true;
+				else if(j.getRole().getNom().equals("RENEGAT")) renegatMort = true;
+				else if(j.getRole().getNom().equals("ADJOINT")) adjointMort = true;
 				else nbHLMort++;
 			}	
 		}
+		System.out.println("sherif " + sherifMort +" renegat "+ renegatMort+ " adjoint "+adjointMort + " HL "+ nbHLMort);
 		if(sherifMort){
-			if(joueurHumain.getRole().getNom().equals("Renegat")) System.out.println("Perdu!");
+			if(joueurHumain.getRole().getNom().equals("RENEGAT") || joueurHumain.getRole().getNom().equals("ADJOINT")) System.out.println("Perdu!");
 			else System.out.println("Gagné!");
 			return true;
 		}

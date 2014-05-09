@@ -21,8 +21,8 @@ public class Magasin extends ActionSurjoueur {
 	 */
 	public void capacite(Jeu jeu) {
 		ArrayList<Action> magasin = new ArrayList<Action>();
-		ArrayList<Joueur> participants = jeu.getJoueursEnJeu();
-		for (int i = 0; i < participants.size(); i++) {
+		ArrayList<Joueur> joueurs = jeu.getJoueursEnJeu();
+		for (int i = 0; i < joueurs.size(); i++) {
 			try {
 				magasin.add(jeu.piocher());
 			} catch (PlusDeCartesException e) {

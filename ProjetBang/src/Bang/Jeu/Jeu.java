@@ -83,7 +83,7 @@ public class Jeu {
 		for(int i = 0; i<25; i++) this.pioche.add(new Bang());
 		for(int i = 0; i<12; i++) this.pioche.add(new Rate());
 		for(int i = 0; i<4; i++) this.pioche.add(new CoupDeFoudre());
-		for(int i = 0; i<6; i++) this.pioche.add(new Biere());
+		for(int i = 0; i<2; i++) this.pioche.add(new Biere());
 		for(int i = 0; i<2; i++) this.pioche.add(new Convois());
 		for(int i = 0; i<2; i++) this.pioche.add(new Magasin());
 		this.pioche.add(new Saloon());
@@ -214,9 +214,9 @@ public class Jeu {
 						for(Joueur j :participants){
 							if(j.getPdv()<=0) joueursEnJeu.remove(j);
 						}
-						System.out.println("Encore en jeu : " + joueursEnJeu);
 						for(Joueur j :joueursEnJeu){
 							if(j instanceof IA) ((IA) j).notifierAction(a, joueurCourant, cible, joueursEnJeu);
+							System.out.println(j.getRole().getNom()+" pdv :"+j.getPdv());
 						}
 
 					}while(true);
@@ -280,7 +280,6 @@ public class Jeu {
 				else nbHLMort++;
 			}	
 		}
-		System.out.println("sherif " + sherifMort +" renegat "+ renegatMort+ " adjoint "+adjointMort + " HL "+ nbHLMort);
 		if(sherifMort){
 			if(joueurHumain.getRole().getNom().equals("RENEGAT") || joueurHumain.getRole().getNom().equals("ADJOINT")) System.out.println("Perdu!");
 			else System.out.println("Gagné!");
@@ -386,9 +385,18 @@ public class Jeu {
 	 * @return distance
 	 */
 	public int calculerDistance(Joueur j1, Joueur j2) {
-		int plusCourteD = 2;
-		if(joueursEnJeu.indexOf(j1)-joueursEnJeu.indexOf(j2)==1) plusCourteD = 1;
-		return (plusCourteD+j2.getDistance());
+		Joueur cherche1 = null, cherche2 = null;
+		int distance=-1;
+		int placeJ1 = joueursEnJeu.indexOf(j1);
+		int placeJ2 = joueursEnJeu.indexOf(j2);
+		int nbJ = joueursEnJeu.size();
+		do{//On avance de pas en pas
+			distance++;
+			cherche1 = joueursEnJeu.get((placeJ2+distance)%nbJ);
+			cherche2 = joueursEnJeu.get((placeJ1+distance)%nbJ);
+		}
+		while(!cherche1.equals(j1) && !cherche2.equals(j2));
+		return distance;
 	}
 
 }

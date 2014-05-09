@@ -110,7 +110,6 @@ public class IA extends Joueur {
 	{	
 		boolean amisNeedHelp = false;
 		boolean peutTuerEnnemi = false;
-		System.out.println("\tennemis : "+ennemis+"\n\tamis : "+amis+"\n");
 
 		//PIOCHER
 		if(aLAction("Convois") && !piocheVide) return prendreAction("Convois");

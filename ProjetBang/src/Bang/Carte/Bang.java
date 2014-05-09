@@ -18,16 +18,14 @@ public class Bang extends ActionSurAdversaire {
 	 * @param jCourant joueur qui donne la carte
 	 */
 	public void capacite(Jeu jeu, Joueur cible, Joueur jCourant) {
-		System.out.println("BANG : "+jCourant.getRole().getNom()+"->"+cible.getRole().getNom());
 		int nbRate = 1;
 		if(jCourant.getPerso().getNom().equals("SLAB LE FLINGUEUR")) nbRate++;
 		if(cible.peutEsquiver(nbRate)){
-			System.out.println("La cible a esquivé");
+			System.out.println("esquive");
 			//A FAIRE oui non
 			//On défausse les cartes raté
 			for(int i =0; i<nbRate;i++) jeu.defausser(cible.prendreAction("Rate"));
 		}else{
-			System.out.println("La cible a pas esquivé");
 			cible.setPdv(cible.getPdv()-1);
 		}
 	}

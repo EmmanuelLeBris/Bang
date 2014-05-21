@@ -2,6 +2,7 @@ package Bang.Carte;
 
 import Bang.Jeu.Jeu;
 import Bang.Jeu.Joueur;
+import Bang.Jeu.PlusDeCartesException;
 
 public class Bang extends ActionSurAdversaire {
 	/**
@@ -27,6 +28,15 @@ public class Bang extends ActionSurAdversaire {
 			for(int i =0; i<nbRate;i++) jeu.defausser(cible.prendreAction("Rate"));
 		}else{
 			cible.setPdv(cible.getPdv()-1);
+			if(cible.getPerso().getNom().equals("BART CASSIDY"))
+			{
+				try {
+					cible.donnerAction(jeu.piocher());
+				} catch (PlusDeCartesException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

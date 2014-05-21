@@ -139,6 +139,7 @@ public class Jeu {
 	public void lancerJeu()
 	{
 		Action a;
+		boolean suzyAPioche = false;
 		while(!finJeu()){
 			for (Joueur joueurCourant : participants){
 				if (!finJeu() && joueursEnJeu.contains(joueurCourant)) //Si le joueur est encore en jeu
@@ -218,9 +219,23 @@ public class Jeu {
 							if(j instanceof IA) ((IA) j).notifierAction(a, joueurCourant, cible, joueursEnJeu);
 							System.out.println(j.getRole().getNom()+" pdv :"+j.getPdv());
 						}
+						
+						//Capacité de SUZY LAFAYETTE
+						
+						if(!suzyAPioche && joueurCourant.getPerso().getNom().equals("SUZY LAFAYETTE") && joueurCourant.getMain().size()==0){
+							try {
+								joueurCourant.donnerAction(piocher());
+								suzyAPioche =true;
+							} catch (PlusDeCartesException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
 
 					}while(true);
 					joueurCourant.setATire(false);
+					suzyAPioche = false;
 				}
 			}
 		}

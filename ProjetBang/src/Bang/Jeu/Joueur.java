@@ -79,8 +79,8 @@ public class Joueur {
 	 */
 	public Action prendreAction(Action action)
 	{
-		if(main.remove(action)) return action;	
-		return null;
+		if(main.remove(action)) return action;
+		else return null;
 	}
 	
 	/**

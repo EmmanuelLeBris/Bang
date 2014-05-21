@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import controlleur.Controlleur;
 import Bang.Carte.*;
 import Bang.IA.IA;
 
@@ -13,12 +14,15 @@ public class Jeu {
 	private ArrayList<Joueur> joueursEnJeu = new ArrayList<Joueur>();
 	private ArrayList<Joueur> participants = new ArrayList<Joueur>();
 	private Joueur joueurHumain;
+	private Controlleur controlleur;
 	/**
 	 * Initialisation d'une partie
 	 * @param personnage personnage choisi par le joueur
+	 * @param c 
 	 */
-	public void Init(String personnage)
+	public void Init(String personnage, Controlleur c)
 	{
+		controlleur = c;
 		Action a;
 		Joueur tmp;
 		// Init Rôles
@@ -63,7 +67,7 @@ public class Jeu {
 		if(persoJoueur == null) persoJoueur =  personnages.get((int)Math.random()*(1+personnages.size()));
 
 		personnages.remove(persoJoueur);
-		joueursEnJeu.add(joueurHumain = new IA(persoJoueur,roles.get(4)));
+		joueursEnJeu.add(joueurHumain = new Joueur(persoJoueur,roles.get(4)));
 
 		// Init des personnages non humains
 		for(int i=0; i <4; i++)
@@ -183,12 +187,20 @@ public class Jeu {
 						}
 						else
 						{
-							System.out.println("yop man ! Quelle carte ?");
-
-							@SuppressWarnings("resource")
-							Scanner scanner = new Scanner(System.in);
-							String choix = scanner.nextLine();
-							a = joueurCourant.prendreAction(choix);
+							System.out.println(joueurCourant.getMain());
+							while(controlleur.getCarteJouee().equals("")){
+								try {
+									Thread.sleep(50);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+							System.out.println("J'ai recu : "+controlleur.getCarteJouee());
+							if(controlleur.getCarteJouee().equals("Passer Tour"))
+								a= joueurCourant.getAction("Passer Tour");
+							else a = joueurCourant.prendreAction(controlleur.getCarteJouee());
+							controlleur.setCarteJouee("");
+							controlleur.setCarteSelectionnee("");
 
 							//On demande la cible si il faut
 							if(a instanceof ActionSurAdversaire){
@@ -205,7 +217,7 @@ public class Jeu {
 						System.out.println("\tCarte jouée : "+a);
 
 						//On fait l'action
-						
+
 						if(!a.getNom().equals("Passer Tour"))
 							this.faireAction(a, joueurCourant,cible);
 						else break;
@@ -219,9 +231,9 @@ public class Jeu {
 							if(j instanceof IA) ((IA) j).notifierAction(a, joueurCourant, cible, joueursEnJeu);
 							System.out.println(j.getRole().getNom()+" pdv :"+j.getPdv());
 						}
-						
+
 						//Capacité de SUZY LAFAYETTE
-						
+
 						if(!suzyAPioche && joueurCourant.getPerso().getNom().equals("SUZY LAFAYETTE") && joueurCourant.getMain().size()==0){
 							try {
 								joueurCourant.donnerAction(piocher());
@@ -230,7 +242,7 @@ public class Jeu {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							
+
 						}
 
 					}while(true);

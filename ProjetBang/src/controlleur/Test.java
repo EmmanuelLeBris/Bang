@@ -1,10 +1,15 @@
 package controlleur;
 
+import Bang.Jeu.Jeu;
+
 public class Test {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Controlleur c =new Controlleur();
+		Jeu mapartie = new Jeu();
+		Controlleur c =new Controlleur(mapartie);
+		mapartie.Init("ROSE DOOLAN", c);
+		mapartie.lancerJeu();
+		
 	}
 
 }

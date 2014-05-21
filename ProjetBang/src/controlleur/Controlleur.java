@@ -5,10 +5,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
+import Bang.Jeu.Jeu;
 import vueInterface.Windows2;
 
 public class Controlleur {
 
+	private String carteSelectionnee = "";
+	private String carteJouee = "";
+
+	private Jeu j;
 	private Windows2 v;
 	private ActionBang actionBang;
 	private ActionRate actionRate;
@@ -25,7 +30,8 @@ public class Controlleur {
 	private ActionFinDeTour actionFinDeTour;
 	private ActionOk actionOk;
 
-	public Controlleur() {
+	public Controlleur(Jeu mapartie) {
+		this.j = mapartie;
 		this.v = new Windows2();
 		this.actionBang = new ActionBang();
 		this.actionRate = new ActionRate();
@@ -67,6 +73,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Bang !");
+			carteSelectionnee = "Bang";
 		}
 
 	}
@@ -79,7 +86,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Rate !");
-
+			carteSelectionnee = "Rate";
 		}
 
 	}
@@ -92,7 +99,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Hold up!");
-
+			carteSelectionnee = "HoldUp";
 		}
 
 	}
@@ -106,6 +113,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Mustang !");
+			carteSelectionnee = "Mustang";
 		}
 
 	}
@@ -118,7 +126,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Lunette !");
-
+			carteSelectionnee = "Lunette";
 		}
 
 	}
@@ -131,7 +139,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Colt !");
-
+			carteSelectionnee = "Colt";
 		}
 
 	}
@@ -144,7 +152,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Magasin !");
-
+			carteSelectionnee = "Magasin";
 		}
 
 	}
@@ -157,7 +165,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Volvanic !");
-
+			carteSelectionnee = "Volvanic";
 		}
 
 	}
@@ -170,7 +178,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Biere!");
-
+			carteSelectionnee = "Biere";
 		}
 
 	}
@@ -183,7 +191,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Remington!");
-
+			carteSelectionnee = "Remington";
 		}
 
 	}
@@ -196,7 +204,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Schofield !");
-
+			carteSelectionnee = "Schofield";
 		}
 
 	}
@@ -209,7 +217,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action Saloon !");
-
+			carteSelectionnee = "Saloon";
 		}
 
 	}
@@ -222,7 +230,7 @@ public class Controlleur {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			System.out.println("Action FinDeTour !");
-
+			carteJouee = "Passer Tour";
 		}
 
 	}
@@ -233,9 +241,8 @@ public class Controlleur {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
 			System.out.println("Action Ok !");
-
+			carteJouee = carteSelectionnee;
 		}
 
 	}
@@ -269,4 +276,18 @@ public class Controlleur {
 		v.VueJoueur.carte12.bouton.setPressedIcon(new ImageIcon("saloonapp.png"));
 
 	}
+	
+	public String getCarteJouee() {
+		return carteJouee;
+	}
+	
+
+	public void setCarteSelectionnee(String carteSelectionnee) {
+		this.carteSelectionnee = carteSelectionnee;
+	}
+
+	public void setCarteJouee(String carteJouee) {
+		this.carteJouee = carteJouee;
+	}
+
 }

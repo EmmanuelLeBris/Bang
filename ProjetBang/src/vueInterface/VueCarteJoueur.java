@@ -1,7 +1,6 @@
 package vueInterface;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -14,15 +13,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 
 public class VueCarteJoueur extends JPanel {
 	private Image bg;
-	public int i = 4;
+	public int i = 0;
 	public JButton bouton;
 	public JLabel panelNomCartes;
+	
 	public VueCarteJoueur(String s) {
-
 		panelNomCartes = new JLabel(s+" x"+i);
 		panelNomCartes.setForeground(Color.white);
 		panelNomCartes.setFont(new Font("Gungsuh",Font.BOLD,11));
@@ -37,8 +35,7 @@ public class VueCarteJoueur extends JPanel {
 		bouton.setHorizontalAlignment(SwingConstants.RIGHT);
 		bouton.setVerticalAlignment(SwingConstants.BOTTOM);
 		add(bouton);
-		bg = new ImageIcon("plaque.png").getImage();
-		//bg= new ImageIcon("bang.png").getImage();
+		bg = new ImageIcon("plaque.png").getImage();	
 	}
 
 	public void paintComponent(Graphics g) {

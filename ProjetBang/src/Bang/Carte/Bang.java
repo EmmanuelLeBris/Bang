@@ -9,7 +9,7 @@ public class Bang extends ActionSurAdversaire {
 	 * Constructeur de la carte bang
 	 */
 	public Bang() {
-		super("Bang", "Ôter un point de vie à un autre joueur");
+		super("Bang");
 	}
 
 	/**
@@ -39,5 +39,7 @@ public class Bang extends ActionSurAdversaire {
 			}
 		}
 	}
+	
+	
 
 }

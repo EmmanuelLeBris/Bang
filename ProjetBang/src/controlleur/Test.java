@@ -6,8 +6,9 @@ public class Test {
 
 	public static void main(String[] args) {
 		Jeu mapartie = new Jeu();
+		mapartie.initJoueurs("ROSE DOOLAN");
 		Controlleur c =new Controlleur(mapartie);
-		mapartie.Init("ROSE DOOLAN", c);
+		mapartie.setControlleur(c);
 		mapartie.lancerJeu();
 		
 	}

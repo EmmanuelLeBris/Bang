@@ -5,10 +5,9 @@ public abstract class ActionBonus extends Action {
 	/**
 	 * Constructeur d'une action bonus qui permet d'améliorer le personnage d'un joueur
 	 * @param nom nom de l'action
-	 * @param description description de l'action
 	 */
-	public ActionBonus(String nom, String description) {
-		super(nom, description);
+	public ActionBonus(String nom) {
+		super(nom);
 		// TODO Auto-generated constructor stub
 	}
 

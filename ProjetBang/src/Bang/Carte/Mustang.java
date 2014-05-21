@@ -8,7 +8,7 @@ public class Mustang extends ActionBonus {
 	 * Constructeur du bonus mustang
 	 */
 	public Mustang() {
-		super("Mustang", "augmente votre distance de 1");		
+		super("Mustang");		
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class Mustang extends ActionBonus {
 	@Override
 	public String toString() {
 		return "Mustang [distanceBonus=" + distanceBonus + ", nom=" + nom
-				+ ", description=" + description + "]";
+				+ ", description=" + "]";
 	}
 
 

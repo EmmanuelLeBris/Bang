@@ -2,27 +2,27 @@ package Bang.Jeu;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Observable;
 import java.util.Scanner;
 
 import controlleur.Controlleur;
 import Bang.Carte.*;
 import Bang.IA.IA;
 
-public class Jeu {
+public class Jeu extends Observable{
 	private ArrayList<Action> pioche = new ArrayList<Action>();
 	private ArrayList<Action> defausse = new ArrayList<Action>();
 	private ArrayList<Joueur> joueursEnJeu = new ArrayList<Joueur>();
 	private ArrayList<Joueur> participants = new ArrayList<Joueur>();
 	private Joueur joueurHumain;
 	private Controlleur controlleur;
+	private int indexJHumain;
 	/**
 	 * Initialisation d'une partie
 	 * @param personnage personnage choisi par le joueur
-	 * @param c 
 	 */
-	public void Init(String personnage, Controlleur c)
+	public void initJoueurs(String personnage)
 	{
-		controlleur = c;
 		Action a;
 		Joueur tmp;
 		// Init Rôles
@@ -63,16 +63,24 @@ public class Jeu {
 		for(Personnage p : personnages){
 			if(p.getNom().equals(personnage)) persoJoueur = p;
 		}
+		
+		int rand = (int)(Math.random()*(1+personnages.size()));
 		//Si le joueur n'a pas choisi de personnage on en tire un au hasard
-		if(persoJoueur == null) persoJoueur =  personnages.get((int)Math.random()*(1+personnages.size()));
+		if(persoJoueur == null) persoJoueur =  personnages.get(rand);
 
 		personnages.remove(persoJoueur);
-		joueursEnJeu.add(joueurHumain = new Joueur(persoJoueur,roles.get(4)));
-
+		
+		int indexPerso = 0;
 		// Init des personnages non humains
-		for(int i=0; i <4; i++)
-			this.joueursEnJeu.add(new IA(personnages.get(i),roles.get(i)));
-
+		for(int i=0; i <5; i++){
+			if(i==rand){
+				joueursEnJeu.add(joueurHumain = new Joueur(persoJoueur,roles.get(i)));
+				indexPerso--;
+			}
+			else this.joueursEnJeu.add(new IA(personnages.get(indexPerso),roles.get(i)));
+			indexPerso++;
+		}
+		
 		// on ajoute les cartes dans la pioche (cf cahier des charges pour le nombre)
 		//Armes
 		for(int i = 0; i<3; i++) this.pioche.add(new Schofield());
@@ -97,16 +105,15 @@ public class Jeu {
 
 		// on mélange la pioche ;)
 		Collections.shuffle(pioche);
-
+		
 		// on detecte le shériff et on met en place les joueurs
-		int index = (roles.indexOf(sherif)+1)%5;
-
+		int index = roles.indexOf(sherif);
 		if (index!=0)
 		{
 			joueursEnJeu.add(0, joueursEnJeu.get(index));
 			joueursEnJeu.remove(index+1);
 		}
-
+		
 		// ensuite on distribue carte par carte
 		for (int l=0;l<4;l++)
 		{
@@ -121,10 +128,11 @@ public class Jeu {
 				}
 			}
 		}
-		//Autre 
-		for(Joueur j :joueursEnJeu){
+		for (int i = 0; i < joueursEnJeu.size(); i++) {
+			Joueur j = joueursEnJeu.get(i);
 			j.donnerAction(passerTour);
 			if(j instanceof IA) ((IA) j).init(joueursEnJeu);
+			else setIndexJHumain(i);
 		}
 		// une carte en plus pour le shériff ;)
 		tmp = joueursEnJeu.get(0);
@@ -424,6 +432,38 @@ public class Jeu {
 		}
 		while(!cherche1.equals(j1) && !cherche2.equals(j2));
 		return distance;
+	}
+	
+	public Controlleur getControlleur() {
+		return controlleur;
+	}
+
+	public void setControlleur(Controlleur controlleur) {
+		this.controlleur = controlleur;
+	}
+
+	public ArrayList<Action> getPioche() {
+		return pioche;
+	}
+
+	public ArrayList<Action> getDefausse() {
+		return defausse;
+	}
+
+	public ArrayList<Joueur> getParticipants() {
+		return participants;
+	}
+
+	public Joueur getJoueurHumain() {
+		return joueurHumain;
+	}
+
+	public int getIndexJHumain() {
+		return indexJHumain;
+	}
+
+	public void setIndexJHumain(int indexJHumain) {
+		this.indexJHumain = indexJHumain;
 	}
 
 }

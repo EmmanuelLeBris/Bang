@@ -9,25 +9,25 @@ public class Windows2 {
 	public VueAdversaire VueAdv3;
 	public VueAdversaire VueAdv4;
 	public VueJoueur VueJoueur;
-	public Windows2() {
+	public Windows2(VueJoueur vueJoueur, VueAdversaire vueAdv1, VueAdversaire vueAdv2, VueAdversaire vueAdv3, VueAdversaire vueAdv4) {
 		FenetrePrincipale fenetre = new FenetrePrincipale("./fond.jpg");
 		fenetre.setLayout(new GridLayout(2, 1));
 		MyPanel panelhaut = new MyPanel();
 
 		// Vue des adversaires
 
-		VueAdv1 = new VueAdversaire("Slab le Flingueur", false);
-		VueAdv2 = new VueAdversaire("Jesse James", false);
-		VueAdv3 = new VueAdversaire("Bart Cassidy", true);
-		VueAdv4 = new VueAdversaire("Lucky-Luke", false);
+		this.VueAdv1 = vueAdv1;
+		this.VueAdv2 = vueAdv2;
+		this.VueAdv3 = vueAdv3;
+		this.VueAdv4 = vueAdv4;
 		panelhaut.setLayout(new GridLayout(1, 4));
-		panelhaut.add(VueAdv1);
-		panelhaut.add(VueAdv2);
-		panelhaut.add(VueAdv3);
-		panelhaut.add(VueAdv4);
+		panelhaut.add(this.VueAdv1);
+		panelhaut.add(this.VueAdv2);
+		panelhaut.add(this.VueAdv3);
+		panelhaut.add(this.VueAdv4);
 
 		// Vue du joueur
-		VueJoueur = new VueJoueur("Joe Dalton", true, "adjoint");
+		this.VueJoueur = vueJoueur;
 
 		fenetre.add(panelhaut);
 		fenetre.add(VueJoueur);

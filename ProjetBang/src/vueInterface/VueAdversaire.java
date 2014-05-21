@@ -25,15 +25,15 @@ public class VueAdversaire extends MyPanel {
 	public VueBonusMustang bonus1;
 	public VueBonusLunette bonus2;
 
-	public VueAdversaire(String s, boolean sher) {
+	public VueAdversaire(String s, String role) {
 		bonus1 = new VueBonusMustang();
 		bonus2 = new VueBonusLunette(true);
 		cartes = new VueCartesAdv();
 		JLabel nomPerso = new JLabel(s, JLabel.CENTER);
 		portrait = new VuePortrait(s);
-		panelEtoile = new VueSherif(sher);
+		panelEtoile = new VueSherif(role.equals("SHERIF"));
 		arme = new VueArme("colt");
-		panelVie1 = new VuePointDeVie(sher);
+		panelVie1 = new VuePointDeVie(role.equals("SHERIF"));
 		panelVie2 = new VuePointDeVie(true);
 		panelVie3 = new VuePointDeVie(true);
 		panelVie4 = new VuePointDeVie(true);
@@ -59,7 +59,7 @@ public class VueAdversaire extends MyPanel {
 		panelcartes.add(lol, BorderLayout.WEST);
 		panelcartes.add(cartes, BorderLayout.CENTER);
 
-		nomPerso.setFont(new Font("Gungsuh", Font.BOLD, 12));
+		nomPerso.setFont(new Font("Gungsuh", Font.BOLD, 10));
 
 		panelcartes.add(nomPerso, BorderLayout.SOUTH);
 

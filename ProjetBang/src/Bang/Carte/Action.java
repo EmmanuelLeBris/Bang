@@ -2,24 +2,15 @@ package Bang.Carte;
 
 public abstract class Action {
 	protected String nom;
-	protected String description;
 
 	/**
 	 * Constructeur d'une action à jouer par un joueur
 	 * @param nom nom de la carte
 	 * @param description description de la carte
 	 */
-	public Action(String nom, String description) {
+	public Action(String nom) {
 		this.nom = nom;
-		this.description = description;
-	}
 
-	/**
-	 * Récupère la description de l'action
-	 * @return description de l'action
-	 */
-	public String getDescription() {
-		return description;
 	}
 
 	/**
@@ -35,7 +26,5 @@ public abstract class Action {
 		return "[ nom=" + nom + ", description=" + description + "]";
 		*/return nom;
 	}
-
-
 
 }

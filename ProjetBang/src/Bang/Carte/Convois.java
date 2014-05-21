@@ -9,7 +9,7 @@ public class Convois extends ActionSurjoueur {
 	 * Constructeur d'un convois
 	 */
 	public Convois() {
-		super("Convois", "Permet de piocher deux cartes");
+		super("Convois");
 	}
 
 	/**

@@ -40,13 +40,14 @@ public class VueJoueur extends MyPanel {
 	public VueRoleJoueur panelRole;
 	public JButton finDeTour;
 	public JButton bouttonOk;
+	public JTextArea textExplicatif;
 
 
-	public VueJoueur(String s, boolean sher,String RoleJ) {
+	public VueJoueur(String s, String roleJ) {
 
 		JLabel nomPersoJoueur = new JLabel(s);
-		ptVie1 = new VuePointDeVie(false);
-		ptVie2 = new VuePointDeVie(sher);
+		ptVie1 = new VuePointDeVie(roleJ.equals("SHERIF"));
+		ptVie2 = new VuePointDeVie(true);
 		ptVie3 = new VuePointDeVie(true);
 		ptVie4 = new VuePointDeVie(true);
 		ptVie5 = new VuePointDeVie(true);
@@ -54,7 +55,7 @@ public class VueJoueur extends MyPanel {
 		arme = new VueArme("schofield");
 		bonus1 = new VueBonusMustang();
 		bonus2 = new VueBonusLunette(true);
-		panelRole = new VueRoleJoueur(RoleJ);
+		panelRole = new VueRoleJoueur(roleJ);
 
 		BorderLayout layoutJoueur = new BorderLayout();
 		MyPanel cartesPanel = new MyPanel();
@@ -85,7 +86,7 @@ public class VueJoueur extends MyPanel {
 		carte3 = new VueCarteJoueur("holdup");
 		carte4 = new VueCarteJoueur("mustangb");
 		carte5 = new VueCarteJoueur("lunetteb");
-		carte6 = new VueCarteJoueur("colt");
+		carte6 = new VueCarteJoueur("convoi");
 		carte7 = new VueCarteJoueur("magasin");
 		carte8 = new VueCarteJoueur("volcanic");
 		carte9 = new VueCarteJoueur("biere");
@@ -150,6 +151,7 @@ public class VueJoueur extends MyPanel {
 		finDeTour.setBackground(new Color(0,0,0,0));
 		finDeTour.setFont(fontBouton);
 		finDeTour.setPreferredSize(new Dimension(100, 10));
+		finDeTour.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		panelFinTour.add(finDeTour, BorderLayout.CENTER);
 
 		nomPerso.add(panelFinTour, BorderLayout.EAST);
@@ -172,10 +174,11 @@ public class VueJoueur extends MyPanel {
 		panelText.setLayout(new BorderLayout());
 		panelText.setBackground(Color.white);
 		
-		JTextArea textExplicatif = new JTextArea("Hello");
+		textExplicatif = new JTextArea("");
 		textExplicatif.setFont(fontBouton);
 		textExplicatif.setPreferredSize(new Dimension(582, 50));
 		panelText.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		textExplicatif.setColumns(20);
 		textExplicatif.setEditable(false);
 		
 		bouttonOk = new JButton("OK");
@@ -183,6 +186,7 @@ public class VueJoueur extends MyPanel {
 		bouttonOk.setPreferredSize(new Dimension(50, 30));
 		bouttonOk.setMargin(new Insets(0, 0, 0, 0));
 		bouttonOk.setFont(fontBouton);
+		bouttonOk.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
 		JPanel panelBouttonOk = new JPanel();
 		panelBouttonOk.setBackground(Color.white);

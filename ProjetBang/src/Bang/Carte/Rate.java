@@ -7,7 +7,7 @@ public class Rate extends ActionSurjoueur{
 	 * @param description
 	 */
 	public Rate() {
-		super("Rate", "Permet d'esquiver un bang");
+		super("Rate");
 	}
 
 }

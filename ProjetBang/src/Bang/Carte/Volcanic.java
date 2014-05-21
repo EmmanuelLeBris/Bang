@@ -7,7 +7,7 @@ public class Volcanic extends Arme {
 	 * Constructeur de l'arme volcanic
 	 */
 	public Volcanic() {
-		super("Volcanic", "portee 1 mais tirs illimités", 1);
+		super("Volcanic", 1);
 		// TODO Auto-generated constructor stub
 	}
 	@Override
@@ -25,7 +25,7 @@ public class Volcanic extends Arme {
 	@Override
 	public String toString() {
 		return "Volcanic [porteeBonus=" + porteeBonus + ", nom=" + nom
-				+ ", description=" + description + "]";
+				+ ", description="  + "]";
 	}
 
 

@@ -10,8 +10,8 @@ public abstract class Arme extends ActionBonus {
 	 * @param description description de l'arme
 	 * @param porteeBonus bnus de portee
 	 */
-	public Arme(String nom, String description, int porteeBonus) {
-		super(nom, description);
+	public Arme(String nom, int porteeBonus) {
+		super(nom);
 		this.porteeBonus=porteeBonus;
 	}
 

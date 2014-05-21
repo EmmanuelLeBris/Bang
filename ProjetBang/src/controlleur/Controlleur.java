@@ -1,14 +1,20 @@
 package controlleur;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import Bang.Jeu.Jeu;
+import Bang.Jeu.Joueur;
+import vueInterface.VueAdversaire;
+import vueInterface.VueJoueur;
 import vueInterface.Windows2;
 
-public class Controlleur {
+public class Controlleur implements Observer{
 
 	private String carteSelectionnee = "";
 	private String carteJouee = "";
@@ -32,7 +38,15 @@ public class Controlleur {
 
 	public Controlleur(Jeu mapartie) {
 		this.j = mapartie;
-		this.v = new Windows2();
+		ArrayList<Joueur> joueurs = j.getParticipants();
+		VueAdversaire vueAdv[] = new VueAdversaire[5];
+		int k = 0;
+		for(int i = 1; i<joueurs.size(); i++){
+			k = (j.getIndexJHumain()+i)%joueurs.size();
+			vueAdv[i-1] = new VueAdversaire(joueurs.get(k).getPerso().getNom(), joueurs.get(k).getRole().getNom());
+		}
+		VueJoueur vueJoueur = new VueJoueur(j.getJoueurHumain().getPerso().getNom(), j.getJoueurHumain().getRole().getNom());
+		this.v = new Windows2(vueJoueur , vueAdv[0],vueAdv[1],vueAdv[2],vueAdv[3]);
 		this.actionBang = new ActionBang();
 		this.actionRate = new ActionRate();
 		this.actionHoldUp = new ActionHoldUp();
@@ -48,6 +62,7 @@ public class Controlleur {
 		this.actionFinDeTour = new ActionFinDeTour();
 		this.actionOk = new ActionOk();
 
+		
 		v.VueJoueur.carte1.bouton.setAction(actionBang);
 		v.VueJoueur.carte2.bouton.setAction(actionRate);
 		v.VueJoueur.carte3.bouton.setAction(actionHoldUp);
@@ -72,7 +87,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Bang !");
+			v.VueJoueur.textExplicatif.setText("Ôter un point de vie à un autre joueur");
 			carteSelectionnee = "Bang";
 		}
 
@@ -85,7 +100,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Rate !");
+			v.VueJoueur.textExplicatif.setText("Permet d'esquiver un bang");
 			carteSelectionnee = "Rate";
 		}
 
@@ -98,7 +113,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Hold up!");
+			v.VueJoueur.textExplicatif.setText("Défausser une carte à un joueur");
 			carteSelectionnee = "HoldUp";
 		}
 
@@ -112,7 +127,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Mustang !");
+			v.VueJoueur.textExplicatif.setText("Augmente votre distance de 1");
 			carteSelectionnee = "Mustang";
 		}
 
@@ -125,7 +140,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Lunette !");
+			v.VueJoueur.textExplicatif.setText("Augmente de 1 la portée de votre arme");
 			carteSelectionnee = "Lunette";
 		}
 
@@ -138,8 +153,8 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Colt !");
-			carteSelectionnee = "Colt";
+			v.VueJoueur.textExplicatif.setText("Permet de piocher deux cartes");
+			carteSelectionnee = "Convoi";
 		}
 
 	}
@@ -151,7 +166,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Magasin !");
+			v.VueJoueur.textExplicatif.setText("Révèle autant de carte qu’il y a de joueurs, chaque joueur en pioche une\n(ordre de jeu à partir de celui qui a posé la carte puis dans le sens\nhorraire)");
 			carteSelectionnee = "Magasin";
 		}
 
@@ -164,7 +179,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Volvanic !");
+			v.VueJoueur.textExplicatif.setText("Votre portée devient de 1 mais votre nombre de tirs n'est plus limité");
 			carteSelectionnee = "Volvanic";
 		}
 
@@ -177,7 +192,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Biere!");
+			v.VueJoueur.textExplicatif.setText("Rend un point de vie");
 			carteSelectionnee = "Biere";
 		}
 
@@ -190,7 +205,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Remington!");
+			v.VueJoueur.textExplicatif.setText("Votre portée devient de 3");
 			carteSelectionnee = "Remington";
 		}
 
@@ -203,7 +218,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Schofield !");
+			v.VueJoueur.textExplicatif.setText("Votre portée devient de 2");
 			carteSelectionnee = "Schofield";
 		}
 
@@ -216,7 +231,7 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action Saloon !");
+			v.VueJoueur.textExplicatif.setText("Rend un point de vie à tous les personnages");
 			carteSelectionnee = "Saloon";
 		}
 
@@ -229,7 +244,6 @@ public class Controlleur {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("Action FinDeTour !");
 			carteJouee = "Passer Tour";
 		}
 
@@ -241,8 +255,8 @@ public class Controlleur {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Action Ok !");
 			carteJouee = carteSelectionnee;
+			v.VueJoueur.textExplicatif.setText("");
 		}
 
 	}
@@ -254,26 +268,29 @@ public class Controlleur {
 		v.VueJoueur.carte3.bouton.setIcon(new ImageIcon("holdup.png"));
 		v.VueJoueur.carte4.bouton.setIcon(new ImageIcon("mustangb.png"));
 		v.VueJoueur.carte5.bouton.setIcon(new ImageIcon("lunetteb.png"));
-		v.VueJoueur.carte6.bouton.setIcon(new ImageIcon("colt.png"));
+		v.VueJoueur.carte6.bouton.setIcon(new ImageIcon("convoi.png"));
 		v.VueJoueur.carte7.bouton.setIcon(new ImageIcon("magasin.png"));
-		v.VueJoueur.carte8.bouton.setIcon(new ImageIcon("volcanic.png"));
+		v.VueJoueur.carte8.bouton.setIcon(new ImageIcon("volcanicb.png"));
 		v.VueJoueur.carte9.bouton.setIcon(new ImageIcon("biere.png"));
-		v.VueJoueur.carte10.bouton.setIcon(new ImageIcon("remington.png"));
-		v.VueJoueur.carte11.bouton.setIcon(new ImageIcon("schofield.png"));
+		v.VueJoueur.carte10.bouton.setIcon(new ImageIcon("remingtonb.png"));
+		v.VueJoueur.carte11.bouton.setIcon(new ImageIcon("schofieldb.png"));
 		v.VueJoueur.carte12.bouton.setIcon(new ImageIcon("saloon.png"));
 		v.VueJoueur.finDeTour.setIcon(new ImageIcon("fintour.png"));
+		v.VueJoueur.bouttonOk.setIcon(new ImageIcon("ok.png"));
 		v.VueJoueur.carte1.bouton.setPressedIcon(new ImageIcon("bangapp.png"));
 		v.VueJoueur.carte2.bouton.setPressedIcon(new ImageIcon("rateapp.png"));
 		v.VueJoueur.carte3.bouton.setPressedIcon(new ImageIcon("holdupapp.png"));
 		v.VueJoueur.carte4.bouton.setPressedIcon(new ImageIcon("mustangbapp.png"));
 		v.VueJoueur.carte5.bouton.setPressedIcon(new ImageIcon("lunettebapp.png"));
-		v.VueJoueur.carte6.bouton.setPressedIcon(new ImageIcon("coltapp.png"));
+		v.VueJoueur.carte6.bouton.setPressedIcon(new ImageIcon("convoiapp.png"));
 		v.VueJoueur.carte7.bouton.setPressedIcon(new ImageIcon("magasinapp.png"));
-		v.VueJoueur.carte8.bouton.setPressedIcon(new ImageIcon("volcanicapp.png"));
+		v.VueJoueur.carte8.bouton.setPressedIcon(new ImageIcon("volcanicbapp.png"));
 		v.VueJoueur.carte9.bouton.setPressedIcon(new ImageIcon("biereapp.png"));
-		v.VueJoueur.carte10.bouton.setPressedIcon(new ImageIcon("remingtonapp.png"));
-		v.VueJoueur.carte11.bouton.setPressedIcon(new ImageIcon("schofieldapp.png"));
+		v.VueJoueur.carte10.bouton.setPressedIcon(new ImageIcon("remingtonbapp.png"));
+		v.VueJoueur.carte11.bouton.setPressedIcon(new ImageIcon("schofieldbapp.png"));
 		v.VueJoueur.carte12.bouton.setPressedIcon(new ImageIcon("saloonapp.png"));
+		v.VueJoueur.finDeTour.setPressedIcon(new ImageIcon("fintourapp.png"));
+		v.VueJoueur.bouttonOk.setPressedIcon(new ImageIcon("okapp.png"));
 
 	}
 	
@@ -288,6 +305,11 @@ public class Controlleur {
 
 	public void setCarteJouee(String carteJouee) {
 		this.carteJouee = carteJouee;
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+			
 	}
 
 }

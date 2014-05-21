@@ -8,7 +8,7 @@ public class Biere extends ActionSurjoueur {
 	 * Constructeur de la carte biere
 	 */
 	public Biere() {
-		super("Biere", "Rend un point de vie");
+		super("Biere");
 	}
 
 	/**

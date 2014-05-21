@@ -8,7 +8,7 @@ public class Lunette extends ActionBonus {
 	 * Constructeur du bonus lunette
 	 */
 	public Lunette() {
-		super("Lunette","augmente de 1 la portee de votre arme");
+		super("Lunette");
 
 	}
 
@@ -27,7 +27,7 @@ public class Lunette extends ActionBonus {
 	@Override
 	public String toString() {
 		return "Lunette [porteeBonus=" + porteeBonus + ", nom=" + nom
-				+ ", description=" + description + "]";
+				+ ", description="  + "]";
 	}
 
 

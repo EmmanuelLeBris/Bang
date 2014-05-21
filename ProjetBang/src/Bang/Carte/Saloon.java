@@ -8,7 +8,7 @@ public class Saloon extends ActionSurjoueur {
 	 * Constructeur de l'action saloon
 	 */
 	public Saloon() {
-		super("Saloon", "Rend un point de vie à tout le monde");
+		super("Saloon");
 	}
 
 	/**

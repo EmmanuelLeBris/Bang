@@ -12,7 +12,7 @@ public class Magasin extends ActionSurjoueur {
 	 * Constructeur de l'action magasin
 	 */
 	public Magasin() {
-		super("Magasin", "Révèle autant de carte qu’il y a de joueurs, chaque joueur en pioche une (ordre de jeu à partir de celui qui a posé la carte)");
+		super("Magasin");
 	}
 
 	/**

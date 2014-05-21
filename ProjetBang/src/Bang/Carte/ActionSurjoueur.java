@@ -6,8 +6,8 @@ public abstract class ActionSurjoueur extends Action {
 	 * @param nom
 	 * @param description
 	 */
-	public ActionSurjoueur(String nom, String description) {
-		super(nom, description);
+	public ActionSurjoueur(String nom) {
+		super(nom);
 		// TODO Auto-generated constructor stub
 	}
 	

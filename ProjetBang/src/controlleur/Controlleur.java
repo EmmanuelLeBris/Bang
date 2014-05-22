@@ -1,6 +1,8 @@
 package controlleur;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -8,17 +10,36 @@ import java.util.Observer;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
-import Bang.Jeu.Jeu;
-import Bang.Jeu.Joueur;
 import vueInterface.VueAdversaire;
+import vueInterface.VueArme;
+import vueInterface.VueBonusLunette;
+import vueInterface.VueBonusMustang;
+import vueInterface.VueCarteJoueur;
 import vueInterface.VueJoueur;
 import vueInterface.Windows2;
+import Bang.Carte.Action;
+import Bang.Carte.ActionBonus;
+import Bang.Carte.Arme;
+import Bang.Carte.Bang;
+import Bang.Carte.Biere;
+import Bang.Carte.Convois;
+import Bang.Carte.CoupDeFoudre;
+import Bang.Carte.Lunette;
+import Bang.Carte.Magasin;
+import Bang.Carte.Mustang;
+import Bang.Carte.Rate;
+import Bang.Carte.Remington;
+import Bang.Carte.Saloon;
+import Bang.Carte.Schofield;
+import Bang.Carte.Volcanic;
+import Bang.Jeu.Jeu;
+import Bang.Jeu.Joueur;
 
-public class Controlleur implements Observer{
+public class Controlleur implements Observer,MouseListener{
 
 	private String carteSelectionnee = "";
 	private String carteJouee = "";
-
+	private String joueurSelectionne= "";
 	private Jeu j;
 	private Windows2 v;
 	private ActionBang actionBang;
@@ -46,7 +67,7 @@ public class Controlleur implements Observer{
 			vueAdv[i-1] = new VueAdversaire(joueurs.get(k).getPerso().getNom(), joueurs.get(k).getRole().getNom());
 		}
 		VueJoueur vueJoueur = new VueJoueur(j.getJoueurHumain().getPerso().getNom(), j.getJoueurHumain().getRole().getNom());
-		this.v = new Windows2(vueJoueur , vueAdv[0],vueAdv[1],vueAdv[2],vueAdv[3]);
+		this.v = new Windows2(vueJoueur , vueAdv, this);
 		this.actionBang = new ActionBang();
 		this.actionRate = new ActionRate();
 		this.actionHoldUp = new ActionHoldUp();
@@ -82,12 +103,14 @@ public class Controlleur implements Observer{
 
 	public class ActionBang extends AbstractAction {
 		public ActionBang() {
+			
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
+			// TODO Auto-generated method stub			
 			v.VueJoueur.textExplicatif.setText("Ôter un point de vie à un autre joueur");
+			joueurSelectionne="";
 			carteSelectionnee = "Bang";
 		}
 
@@ -114,6 +137,7 @@ public class Controlleur implements Observer{
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			v.VueJoueur.textExplicatif.setText("Défausser une carte à un joueur");
+			joueurSelectionne="";
 			carteSelectionnee = "HoldUp";
 		}
 
@@ -166,7 +190,7 @@ public class Controlleur implements Observer{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			v.VueJoueur.textExplicatif.setText("Révèle autant de carte qu’il y a de joueurs, chaque joueur en pioche une\n(ordre de jeu à partir de celui qui a posé la carte puis dans le sens\nhorraire)");
+			v.VueJoueur.textExplicatif.setText("Révèle autant de carte qu’il y a de joueurs, chaque joueur en pioche une\n(ordre de choix à partir de celui qui a posé la carte puis dans le sens\nhorraire)");
 			carteSelectionnee = "Magasin";
 		}
 
@@ -179,8 +203,8 @@ public class Controlleur implements Observer{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			v.VueJoueur.textExplicatif.setText("Votre portée devient de 1 mais votre nombre de tirs n'est plus limité");
-			carteSelectionnee = "Volvanic";
+			v.VueJoueur.textExplicatif.setText("Votre portée devient de 1 mais votre nombre de tirs par tour n'est plus \nlimité");
+			carteSelectionnee = "Volcanic";
 		}
 
 	}
@@ -263,18 +287,18 @@ public class Controlleur implements Observer{
 
 	public final void initButton()
 	{
-		v.VueJoueur.carte1.bouton.setIcon(new ImageIcon("bang.png"));
-		v.VueJoueur.carte2.bouton.setIcon(new ImageIcon("rate.png"));
-		v.VueJoueur.carte3.bouton.setIcon(new ImageIcon("holdup.png"));
-		v.VueJoueur.carte4.bouton.setIcon(new ImageIcon("mustangb.png"));
-		v.VueJoueur.carte5.bouton.setIcon(new ImageIcon("lunetteb.png"));
-		v.VueJoueur.carte6.bouton.setIcon(new ImageIcon("convoi.png"));
-		v.VueJoueur.carte7.bouton.setIcon(new ImageIcon("magasin.png"));
-		v.VueJoueur.carte8.bouton.setIcon(new ImageIcon("volcanicb.png"));
-		v.VueJoueur.carte9.bouton.setIcon(new ImageIcon("biere.png"));
-		v.VueJoueur.carte10.bouton.setIcon(new ImageIcon("remingtonb.png"));
-		v.VueJoueur.carte11.bouton.setIcon(new ImageIcon("schofieldb.png"));
-		v.VueJoueur.carte12.bouton.setIcon(new ImageIcon("saloon.png"));
+		v.VueJoueur.carte1.bouton.setIcon(new ImageIcon("Bang.png"));
+		v.VueJoueur.carte2.bouton.setIcon(new ImageIcon("Rate.png"));
+		v.VueJoueur.carte3.bouton.setIcon(new ImageIcon("Holdup.png"));
+		v.VueJoueur.carte4.bouton.setIcon(new ImageIcon("Mustang.png"));
+		v.VueJoueur.carte5.bouton.setIcon(new ImageIcon("Lunette.png"));
+		v.VueJoueur.carte6.bouton.setIcon(new ImageIcon("Convoi.png"));
+		v.VueJoueur.carte7.bouton.setIcon(new ImageIcon("Magasin.png"));
+		v.VueJoueur.carte8.bouton.setIcon(new ImageIcon("Volcanic.png"));
+		v.VueJoueur.carte9.bouton.setIcon(new ImageIcon("Biere.png"));
+		v.VueJoueur.carte10.bouton.setIcon(new ImageIcon("Remington.png"));
+		v.VueJoueur.carte11.bouton.setIcon(new ImageIcon("Schofield.png"));
+		v.VueJoueur.carte12.bouton.setIcon(new ImageIcon("Saloon.png"));
 		v.VueJoueur.finDeTour.setIcon(new ImageIcon("fintour.png"));
 		v.VueJoueur.bouttonOk.setIcon(new ImageIcon("ok.png"));
 		v.VueJoueur.carte1.bouton.setPressedIcon(new ImageIcon("bangapp.png"));
@@ -307,9 +331,88 @@ public class Controlleur implements Observer{
 		this.carteJouee = carteJouee;
 	}
 
+
 	@Override
-	public void update(Observable arg0, Object arg1) {
-			
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		joueurSelectionne=((VueAdversaire)(arg0.getSource())).nomPerso.toString();
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		
+		ArrayList<Joueur> joueurs = j.getParticipants();
+		int k = 0;
+		for(int i = 1; i<joueurs.size(); i++){
+			k = (j.getIndexJHumain()+i)%joueurs.size();
+			
+			//On remet a zéro la table du joueur
+			v.VueAdv[i-1].bonus1 = new VueBonusMustang();
+			v.VueAdv[i-1].bonus2 = new VueBonusLunette(false);
+			
+			for(ActionBonus b : joueurs.get(k).getBonus()){
+				if(b instanceof Arme) v.VueAdv[i-1].arme = new VueArme(b.getNom());
+				else if(b instanceof Mustang) v.VueAdv[i-1].bonus1 = new VueBonusMustang();
+				else if(b instanceof Lunette) v.VueAdv[i-1].bonus2 = new VueBonusLunette(true);
+			}
+		}
+		for(ActionBonus b : j.getJoueurHumain().getBonus()){
+			if(b instanceof Arme) v.VueJoueur.arme = new VueArme(b.getNom());
+			else if(b instanceof Mustang) v.VueJoueur.bonus1 = new VueBonusMustang();
+			else if(b instanceof Lunette) v.VueJoueur.bonus2 = new VueBonusLunette(true);
+		}
+		int bang=0,rate=0, holdup=0, mustang=0, lunette=0, convoi=0, magasin=0, volcanic=0, biere=0, remington=0, schofield=0, saloon=0;
+		for(Action a : j.getJoueurHumain().getMain()){
+			System.out.println();
+			if(a instanceof Bang) bang++;
+			else if(a instanceof Rate) rate++;
+			else if(a instanceof CoupDeFoudre) holdup++;
+			else if(a instanceof Mustang) mustang++;
+			else if(a instanceof Lunette) lunette++;
+			else if(a instanceof Convois) convoi++;
+			else if(a instanceof Magasin) magasin++;
+			else if(a instanceof Volcanic) volcanic++;
+			else if(a instanceof Biere) biere++;
+			else if(a instanceof Remington) remington++;
+			else if(a instanceof Schofield) schofield++;
+			else if(a instanceof Saloon) saloon++;
+		}
+		System.out.println("Main:"+j.getJoueurHumain().getMain());
+		v.VueJoueur.carte1.maj(bang);
+		v.VueJoueur.carte2.maj(rate);
+		v.VueJoueur.carte3.maj(holdup);
+		v.VueJoueur.carte4.maj(mustang);
+		v.VueJoueur.carte5.maj(lunette);
+		v.VueJoueur.carte6.maj(convoi);
+		v.VueJoueur.carte7.maj(magasin);
+		v.VueJoueur.carte8.maj(volcanic);
+		v.VueJoueur.carte9.maj(biere);
+		v.VueJoueur.carte10.maj(remington);
+		v.VueJoueur.carte11.maj(schofield);
+		v.VueJoueur.carte12.maj(saloon);
+	}
 }

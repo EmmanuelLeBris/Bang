@@ -52,7 +52,7 @@ public class VueJoueur extends MyPanel {
 		ptVie4 = new VuePointDeVie(true);
 		ptVie5 = new VuePointDeVie(true);
 		imagePerso = new VuePortrait(s);
-		arme = new VueArme("schofield");
+		arme = new VueArme("schofieldb");
 		bonus1 = new VueBonusMustang();
 		bonus2 = new VueBonusLunette(true);
 		panelRole = new VueRoleJoueur(roleJ);
@@ -81,18 +81,18 @@ public class VueJoueur extends MyPanel {
 		cartesPanel.add(cartes, BorderLayout.CENTER);
 
 		cartes.setLayout(new GridLayout(2, 6));
-		carte1 = new VueCarteJoueur("bang");
-		carte2 = new VueCarteJoueur("rate");
-		carte3 = new VueCarteJoueur("holdup");
-		carte4 = new VueCarteJoueur("mustangb");
-		carte5 = new VueCarteJoueur("lunetteb");
-		carte6 = new VueCarteJoueur("convoi");
-		carte7 = new VueCarteJoueur("magasin");
-		carte8 = new VueCarteJoueur("volcanic");
-		carte9 = new VueCarteJoueur("biere");
-		carte10 = new VueCarteJoueur("remington");
-		carte11 = new VueCarteJoueur("schofield");
-		carte12 = new VueCarteJoueur("saloon");
+		carte1 = new VueCarteJoueur("Bang",0);
+		carte2 = new VueCarteJoueur("Rate",0);
+		carte3 = new VueCarteJoueur("Holdup",0);
+		carte4 = new VueCarteJoueur("Mustang",0);
+		carte5 = new VueCarteJoueur("Lunette",0);
+		carte6 = new VueCarteJoueur("Convoi",0);
+		carte7 = new VueCarteJoueur("Magasin",0);
+		carte8 = new VueCarteJoueur("Volcanic",0);
+		carte9 = new VueCarteJoueur("Biere",0);
+		carte10 = new VueCarteJoueur("Remington",0);
+		carte11 = new VueCarteJoueur("Schofield",0);
+		carte12 = new VueCarteJoueur("Saloon",0);
 
 		cartes.add(carte1);
 		cartes.add(carte2);

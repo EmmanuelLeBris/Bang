@@ -19,8 +19,10 @@ public class VueCarteJoueur extends JPanel {
 	public int i = 0;
 	public JButton bouton;
 	public JLabel panelNomCartes;
+	public String str;
 	
-	public VueCarteJoueur(String s) {
+	public VueCarteJoueur(String s,int i) {
+		str=s;
 		panelNomCartes = new JLabel(s+" x"+i);
 		panelNomCartes.setForeground(Color.white);
 		panelNomCartes.setFont(new Font("Gungsuh",Font.BOLD,11));
@@ -29,17 +31,21 @@ public class VueCarteJoueur extends JPanel {
 		bouton.setIcon(new ImageIcon(s+".png"));
 		bouton.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		bouton.setFont(new Font("Gungsuh", Font.BOLD, 14));
-
 		bouton.setPreferredSize(new Dimension(109, 85));
 		add(panelNomCartes);
 		bouton.setHorizontalAlignment(SwingConstants.RIGHT);
 		bouton.setVerticalAlignment(SwingConstants.BOTTOM);
 		add(bouton);
-		bg = new ImageIcon("plaque.png").getImage();	
+		bg = new ImageIcon("plaque.png").getImage();			
 	}
 
 	public void paintComponent(Graphics g) {
 		g.drawImage(bg, 0, 0, null);
 
+	}
+	
+	public void maj(int k)
+	{
+		panelNomCartes.setText(str+" x"+k);
 	}
 }

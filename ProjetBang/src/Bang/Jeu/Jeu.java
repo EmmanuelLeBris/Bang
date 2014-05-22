@@ -64,7 +64,7 @@ public class Jeu extends Observable{
 			if(p.getNom().equals(personnage)) persoJoueur = p;
 		}
 		
-		int rand = (int)(Math.random()*(1+personnages.size()));
+		int rand = (int)(Math.random()*(personnages.size()));
 		//Si le joueur n'a pas choisi de personnage on en tire un au hasard
 		if(persoJoueur == null) persoJoueur =  personnages.get(rand);
 
@@ -252,7 +252,7 @@ public class Jeu extends Observable{
 							}
 
 						}
-
+						controlleur.update(null, null);
 					}while(true);
 					joueurCourant.setATire(false);
 					suzyAPioche = false;

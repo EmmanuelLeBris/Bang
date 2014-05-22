@@ -24,12 +24,16 @@ public class VueAdversaire extends MyPanel {
 	public VueSherif panelEtoile;
 	public VueBonusMustang bonus1;
 	public VueBonusLunette bonus2;
-
+	public JLabel nomPerso;
+	public JLabel labelnbCartes;
+	public int nbCartes=5;
+	
 	public VueAdversaire(String s, String role) {
 		bonus1 = new VueBonusMustang();
 		bonus2 = new VueBonusLunette(true);
 		cartes = new VueCartesAdv();
-		JLabel nomPerso = new JLabel(s, JLabel.CENTER);
+		nomPerso = new JLabel(s, JLabel.CENTER);
+		labelnbCartes = new JLabel(" "+nbCartes);
 		portrait = new VuePortrait(s);
 		panelEtoile = new VueSherif(role.equals("SHERIF"));
 		arme = new VueArme("colt");
@@ -51,16 +55,17 @@ public class VueAdversaire extends MyPanel {
 		panelPerso.setLayout(gridlay);
 		panelPerso.add(panelportrait);
 		panelPerso.add(panelcartes);
-
 		cartes.setPreferredSize(new Dimension(80, 120));
 		MyPanel lol = new MyPanel();
 		lol.setPreferredSize(new Dimension(25, 30));
+		labelnbCartes.setPreferredSize(new Dimension(20,30));
 		panelcartes.setLayout(new BorderLayout());
 		panelcartes.add(lol, BorderLayout.WEST);
-		panelcartes.add(cartes, BorderLayout.CENTER);
-
+		panelcartes.add(cartes, BorderLayout.NORTH);
+		panelcartes.add(labelnbCartes,BorderLayout.CENTER);
 		nomPerso.setFont(new Font("Gungsuh", Font.BOLD, 10));
-
+		nomPerso.setPreferredSize(new Dimension(50,45));
+		labelnbCartes.setFont(new Font("Gungsuh", Font.BOLD, 15));
 		panelcartes.add(nomPerso, BorderLayout.SOUTH);
 
 		GridBagConstraints contrainte = new GridBagConstraints();

@@ -14,7 +14,7 @@ public class VueBonusLunette extends JPanel {
 
 	public VueBonusLunette(boolean a) {
 		if (a) {
-			s = "./lunette.png";
+			s = "./lunetteb.png";
 		} else {
 			s = "";
 		}

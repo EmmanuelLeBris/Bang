@@ -5,9 +5,25 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Scanner;
 
-import controlleur.Controlleur;
-import Bang.Carte.*;
+import Bang.Carte.Action;
+import Bang.Carte.ActionBonus;
+import Bang.Carte.ActionSurAdversaire;
+import Bang.Carte.Arme;
+import Bang.Carte.Bang;
+import Bang.Carte.Biere;
+import Bang.Carte.Convoi;
+import Bang.Carte.CoupDeFoudre;
+import Bang.Carte.Lunette;
+import Bang.Carte.Magasin;
+import Bang.Carte.Mustang;
+import Bang.Carte.PasserTour;
+import Bang.Carte.Rate;
+import Bang.Carte.Remington;
+import Bang.Carte.Saloon;
+import Bang.Carte.Schofield;
+import Bang.Carte.Volcanic;
 import Bang.IA.IA;
+import controlleur.Controlleur;
 
 public class Jeu extends Observable{
 	private ArrayList<Action> pioche = new ArrayList<Action>();
@@ -16,6 +32,10 @@ public class Jeu extends Observable{
 	private ArrayList<Joueur> participants = new ArrayList<Joueur>();
 	private Joueur joueurHumain;
 	private Controlleur controlleur;
+	private boolean joueurciblee =false;
+	private String nomjoueurcible="";
+
+
 	private int indexJHumain;
 	/**
 	 * Initialisation d'une partie
@@ -96,7 +116,7 @@ public class Jeu extends Observable{
 		for(int i = 0; i<12; i++) this.pioche.add(new Rate());
 		for(int i = 0; i<4; i++) this.pioche.add(new CoupDeFoudre());
 		for(int i = 0; i<2; i++) this.pioche.add(new Biere());
-		for(int i = 0; i<2; i++) this.pioche.add(new Convois());
+		for(int i = 0; i<2; i++) this.pioche.add(new Convoi());
 		for(int i = 0; i<2; i++) this.pioche.add(new Magasin());
 		this.pioche.add(new Saloon());
 
@@ -147,8 +167,9 @@ public class Jeu extends Observable{
 
 	/**
 	 * Lance les tours de jeu
+	 * @throws InterruptedException 
 	 */
-	public void lancerJeu()
+	public void lancerJeu() throws InterruptedException
 	{
 		Action a;
 		boolean suzyAPioche = false;
@@ -156,6 +177,7 @@ public class Jeu extends Observable{
 			for (Joueur joueurCourant : participants){
 				if (!finJeu() && joueursEnJeu.contains(joueurCourant)) //Si le joueur est encore en jeu
 				{
+					
 					//PIOCHE
 					if(joueurCourant.getRole().getNom().equals("JESSE JONES")){
 						//A FAIRE Demander si il veut piocher la carte dans la main d'un joueur ou pas.
@@ -180,10 +202,14 @@ public class Jeu extends Observable{
 					} catch (PlusDeCartesException e) {
 						System.out.println(e.getMessage());
 					}
-
+					
 					Joueur cible= null;
 					System.out.println("\n\n /////////////TOUR "+joueurCourant);
 					do{
+						//Maj Vue
+						setChanged();
+						notifyObservers();
+						
 						//On demande l'action à jouer
 						if (joueurCourant instanceof IA)
 						{
@@ -215,7 +241,13 @@ public class Jeu extends Observable{
 								System.out.println("Choisir un joueur cible : ");
 								@SuppressWarnings("resource")
 								Scanner scan = new Scanner(System.in);
-								String nomEnnemis = scan.nextLine();
+								while(!joueurciblee)
+								{
+									Thread.sleep(50);
+								}
+								String nomEnnemis = this.nomjoueurcible;
+								this.nomjoueurcible="";
+								this.joueurciblee=false;
 								for(Joueur j : joueursEnJeu){
 									if(j.getPerso().getNom().equals(nomEnnemis)) cible=j; 
 								}
@@ -252,7 +284,6 @@ public class Jeu extends Observable{
 							}
 
 						}
-						controlleur.update(null, null);
 					}while(true);
 					joueurCourant.setATire(false);
 					suzyAPioche = false;
@@ -351,6 +382,7 @@ public class Jeu extends Observable{
 			{//On equipe le nouveau bonus
 				if (a instanceof Arme)
 				{//Si c'est une arme on remplace l'ancienne
+					System.out.println("JE JOUE UNE ARME PUTAIN D'ENCUL32 DE TA MAMANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
 					ArrayList<ActionBonus> bonus = jCourant.getBonus();
 					ActionBonus aSuppr = null;
 					for(ActionBonus ab : bonus){
@@ -373,7 +405,7 @@ public class Jeu extends Observable{
 			break;
 			case "Magasin" : ((Magasin) a).capacite(this);
 			break;
-			case "Convois" : ((Convois) a).capacite(jCourant, this);
+			case "Convoi" : ((Convoi) a).capacite(jCourant, this);
 			break;
 			case "Saloon" : ((Saloon) a).capacite(this);
 			break;
@@ -464,6 +496,21 @@ public class Jeu extends Observable{
 
 	public void setIndexJHumain(int indexJHumain) {
 		this.indexJHumain = indexJHumain;
+	}
+	public boolean isJoueurciblee() {
+		return joueurciblee;
+	}
+
+	public void setJoueurciblee(boolean joueurciblee) {
+		this.joueurciblee = joueurciblee;
+	}
+
+	public String getNomjoueurcible() {
+		return nomjoueurcible;
+	}
+
+	public void setNomjoueurcible(String nomjoueurcible) {
+		this.nomjoueurcible = nomjoueurcible;
 	}
 
 }

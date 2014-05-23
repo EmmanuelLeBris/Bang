@@ -29,9 +29,6 @@ public class Joueur {
 		this.pdvmax = perso.getPdv()+role.getPdvBonus();
 
 		if (this.perso.getNom().equals("ROSE DOOLAN")) portee++;
-		if (this.role.getNom().equals("SHERIF")){
-			pdv = ++pdvmax;
-		}
 	}
 
 	/**

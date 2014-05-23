@@ -33,8 +33,7 @@ public class Bang extends ActionSurAdversaire {
 				try {
 					cible.donnerAction(jeu.piocher());
 				} catch (PlusDeCartesException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e.getMessage();
 				}
 			}
 		}

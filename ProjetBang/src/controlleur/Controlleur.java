@@ -1,5 +1,6 @@
 package controlleur;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,6 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import vueInterface.VueAdversaire;
@@ -16,13 +18,14 @@ import vueInterface.VueBonusLunette;
 import vueInterface.VueBonusMustang;
 import vueInterface.VueCarteJoueur;
 import vueInterface.VueJoueur;
+import vueInterface.VuePointDeVie;
 import vueInterface.Windows2;
 import Bang.Carte.Action;
 import Bang.Carte.ActionBonus;
 import Bang.Carte.Arme;
 import Bang.Carte.Bang;
 import Bang.Carte.Biere;
-import Bang.Carte.Convois;
+import Bang.Carte.Convoi;
 import Bang.Carte.CoupDeFoudre;
 import Bang.Carte.Lunette;
 import Bang.Carte.Magasin;
@@ -47,7 +50,7 @@ public class Controlleur implements Observer,MouseListener{
 	private ActionHoldUp actionHoldUp;
 	private ActionMustang actionMustang;
 	private ActionLunette actionLunette;
-	private ActionColt actionColt;
+	private ActionConvoi actionConvoi;
 	private ActionMagasin actionMagasin;
 	private ActionVolcanic actionVolcanic;
 	private ActionBiere actionBiere;
@@ -73,7 +76,7 @@ public class Controlleur implements Observer,MouseListener{
 		this.actionHoldUp = new ActionHoldUp();
 		this.actionMustang = new ActionMustang();
 		this.actionLunette = new ActionLunette();
-		this.actionColt = new ActionColt();
+		this.actionConvoi = new ActionConvoi();
 		this.actionMagasin = new ActionMagasin();
 		this.actionVolcanic = new ActionVolcanic();
 		this.actionBiere = new ActionBiere();
@@ -83,13 +86,14 @@ public class Controlleur implements Observer,MouseListener{
 		this.actionFinDeTour = new ActionFinDeTour();
 		this.actionOk = new ActionOk();
 
+		j.addObserver(this);
 		
 		v.VueJoueur.carte1.bouton.setAction(actionBang);
 		v.VueJoueur.carte2.bouton.setAction(actionRate);
 		v.VueJoueur.carte3.bouton.setAction(actionHoldUp);
 		v.VueJoueur.carte4.bouton.setAction(actionMustang);
 		v.VueJoueur.carte5.bouton.setAction(actionLunette);
-		v.VueJoueur.carte6.bouton.setAction(actionColt);
+		v.VueJoueur.carte6.bouton.setAction(actionConvoi);
 		v.VueJoueur.carte7.bouton.setAction(actionMagasin);
 		v.VueJoueur.carte8.bouton.setAction(actionVolcanic);
 		v.VueJoueur.carte9.bouton.setAction(actionBiere);
@@ -108,10 +112,12 @@ public class Controlleur implements Observer,MouseListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub			
+			// TODO Auto-generated method stub	
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Ôter un point de vie à un autre joueur");
 			joueurSelectionne="";
 			carteSelectionnee = "Bang";
+			v.VueJoueur.carte1.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -123,8 +129,10 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Permet d'esquiver un bang");
 			carteSelectionnee = "Rate";
+			v.VueJoueur.carte2.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));
 		}
 
 	}
@@ -136,9 +144,11 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Défausser une carte à un joueur");
 			joueurSelectionne="";
 			carteSelectionnee = "HoldUp";
+			v.VueJoueur.carte3.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -151,8 +161,10 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Augmente votre distance de 1");
 			carteSelectionnee = "Mustang";
+			v.VueJoueur.carte4.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -164,21 +176,25 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Augmente de 1 la portée de votre arme");
 			carteSelectionnee = "Lunette";
+			v.VueJoueur.carte5.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
 
-	public class ActionColt extends AbstractAction {
-		public ActionColt() {
+	public class ActionConvoi extends AbstractAction {
+		public ActionConvoi() {
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Permet de piocher deux cartes");
 			carteSelectionnee = "Convoi";
+			v.VueJoueur.carte6.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -190,8 +206,10 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Révèle autant de carte qu’il y a de joueurs, chaque joueur en pioche une\n(ordre de choix à partir de celui qui a posé la carte puis dans le sens\nhorraire)");
 			carteSelectionnee = "Magasin";
+			v.VueJoueur.carte7.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -203,8 +221,10 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Votre portée devient de 1 mais votre nombre de tirs par tour n'est plus \nlimité");
 			carteSelectionnee = "Volcanic";
+			v.VueJoueur.carte8.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -216,8 +236,10 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Rend un point de vie");
 			carteSelectionnee = "Biere";
+			v.VueJoueur.carte9.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));			
 		}
 
 	}
@@ -229,8 +251,10 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Votre portée devient de 3");
 			carteSelectionnee = "Remington";
+			v.VueJoueur.carte10.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -242,8 +266,10 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Votre portée devient de 2");
 			carteSelectionnee = "Schofield";
+			v.VueJoueur.carte11.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -255,8 +281,10 @@ public class Controlleur implements Observer,MouseListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+			majLines();
 			v.VueJoueur.textExplicatif.setText("Rend un point de vie à tous les personnages");
 			carteSelectionnee = "Saloon";
+			v.VueJoueur.carte12.bouton.setBorder(BorderFactory.createLineBorder(Color.red, 2));		
 		}
 
 	}
@@ -281,6 +309,7 @@ public class Controlleur implements Observer,MouseListener{
 		public void actionPerformed(ActionEvent arg0) {
 			carteJouee = carteSelectionnee;
 			v.VueJoueur.textExplicatif.setText("");
+			majLines();
 		}
 
 	}
@@ -301,18 +330,18 @@ public class Controlleur implements Observer,MouseListener{
 		v.VueJoueur.carte12.bouton.setIcon(new ImageIcon("Saloon.png"));
 		v.VueJoueur.finDeTour.setIcon(new ImageIcon("fintour.png"));
 		v.VueJoueur.bouttonOk.setIcon(new ImageIcon("ok.png"));
-		v.VueJoueur.carte1.bouton.setPressedIcon(new ImageIcon("bangapp.png"));
-		v.VueJoueur.carte2.bouton.setPressedIcon(new ImageIcon("rateapp.png"));
-		v.VueJoueur.carte3.bouton.setPressedIcon(new ImageIcon("holdupapp.png"));
-		v.VueJoueur.carte4.bouton.setPressedIcon(new ImageIcon("mustangbapp.png"));
-		v.VueJoueur.carte5.bouton.setPressedIcon(new ImageIcon("lunettebapp.png"));
-		v.VueJoueur.carte6.bouton.setPressedIcon(new ImageIcon("convoiapp.png"));
-		v.VueJoueur.carte7.bouton.setPressedIcon(new ImageIcon("magasinapp.png"));
-		v.VueJoueur.carte8.bouton.setPressedIcon(new ImageIcon("volcanicbapp.png"));
-		v.VueJoueur.carte9.bouton.setPressedIcon(new ImageIcon("biereapp.png"));
-		v.VueJoueur.carte10.bouton.setPressedIcon(new ImageIcon("remingtonbapp.png"));
-		v.VueJoueur.carte11.bouton.setPressedIcon(new ImageIcon("schofieldbapp.png"));
-		v.VueJoueur.carte12.bouton.setPressedIcon(new ImageIcon("saloonapp.png"));
+		v.VueJoueur.carte1.bouton.setPressedIcon(new ImageIcon("Bangapp.png"));
+		v.VueJoueur.carte2.bouton.setPressedIcon(new ImageIcon("Rateapp.png"));
+		v.VueJoueur.carte3.bouton.setPressedIcon(new ImageIcon("Holdupapp.png"));
+		v.VueJoueur.carte4.bouton.setPressedIcon(new ImageIcon("Mustangapp.png"));
+		v.VueJoueur.carte5.bouton.setPressedIcon(new ImageIcon("Lunetteapp.png"));
+		v.VueJoueur.carte6.bouton.setPressedIcon(new ImageIcon("Convoiapp.png"));
+		v.VueJoueur.carte7.bouton.setPressedIcon(new ImageIcon("Magasinapp.png"));
+		v.VueJoueur.carte8.bouton.setPressedIcon(new ImageIcon("Volcanicbapp.png"));
+		v.VueJoueur.carte9.bouton.setPressedIcon(new ImageIcon("Biereapp.png"));
+		v.VueJoueur.carte10.bouton.setPressedIcon(new ImageIcon("Remingtonapp.png"));
+		v.VueJoueur.carte11.bouton.setPressedIcon(new ImageIcon("Schofielapp.png"));
+		v.VueJoueur.carte12.bouton.setPressedIcon(new ImageIcon("Saloonapp.png"));
 		v.VueJoueur.finDeTour.setPressedIcon(new ImageIcon("fintourapp.png"));
 		v.VueJoueur.bouttonOk.setPressedIcon(new ImageIcon("okapp.png"));
 
@@ -358,42 +387,36 @@ public class Controlleur implements Observer,MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		joueurSelectionne=((VueAdversaire)(arg0.getSource())).nomPerso.toString();
+		j.setNomjoueurcible(joueurSelectionne=((VueAdversaire)(arg0.getSource())).nomPerso.getText());
+		j.setJoueurciblee(true);
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		
 		ArrayList<Joueur> joueurs = j.getParticipants();
 		int k = 0;
 		for(int i = 1; i<joueurs.size(); i++){
 			k = (j.getIndexJHumain()+i)%joueurs.size();
 			
-			//On remet a zéro la table du joueur
-			v.VueAdv[i-1].bonus1 = new VueBonusMustang();
-			v.VueAdv[i-1].bonus2 = new VueBonusLunette(false);
-			
 			for(ActionBonus b : joueurs.get(k).getBonus()){
-				if(b instanceof Arme) v.VueAdv[i-1].arme = new VueArme(b.getNom());
-				else if(b instanceof Mustang) v.VueAdv[i-1].bonus1 = new VueBonusMustang();
-				else if(b instanceof Lunette) v.VueAdv[i-1].bonus2 = new VueBonusLunette(true);
+				if(b instanceof Arme) v.VueAdv[i-1].change(b.getNom());
+				else if(b instanceof Mustang) v.VueAdv[i-1].bonus1.setVisible(true);
+				else if(b instanceof Lunette) v.VueAdv[i-1].bonus2.setVisible(true);
 			}
 		}
 		for(ActionBonus b : j.getJoueurHumain().getBonus()){
-			if(b instanceof Arme) v.VueJoueur.arme = new VueArme(b.getNom());
-			else if(b instanceof Mustang) v.VueJoueur.bonus1 = new VueBonusMustang();
-			else if(b instanceof Lunette) v.VueJoueur.bonus2 = new VueBonusLunette(true);
+			if(b instanceof Arme) v.VueJoueur.change(b.getNom());
+			else if(b instanceof Mustang) v.VueJoueur.bonus1.setVisible(true);
+			else if(b instanceof Lunette) v.VueJoueur.bonus2.setVisible(true);
 		}
 		int bang=0,rate=0, holdup=0, mustang=0, lunette=0, convoi=0, magasin=0, volcanic=0, biere=0, remington=0, schofield=0, saloon=0;
 		for(Action a : j.getJoueurHumain().getMain()){
-			System.out.println();
 			if(a instanceof Bang) bang++;
 			else if(a instanceof Rate) rate++;
 			else if(a instanceof CoupDeFoudre) holdup++;
 			else if(a instanceof Mustang) mustang++;
 			else if(a instanceof Lunette) lunette++;
-			else if(a instanceof Convois) convoi++;
+			else if(a instanceof Convoi) convoi++;
 			else if(a instanceof Magasin) magasin++;
 			else if(a instanceof Volcanic) volcanic++;
 			else if(a instanceof Biere) biere++;
@@ -414,5 +437,15 @@ public class Controlleur implements Observer,MouseListener{
 		v.VueJoueur.carte10.maj(remington);
 		v.VueJoueur.carte11.maj(schofield);
 		v.VueJoueur.carte12.maj(saloon);
+		v.panelPrincipal.refresh("fond.png");
 	}
+	
+	public void majLines()
+	{
+		for(VueCarteJoueur t : v.VueJoueur.vueCarteJoueur)
+		{
+			t.bouton.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		}
+	}	
+	
 }

@@ -8,7 +8,7 @@ public class CoupDeFoudre extends ActionSurAdversaire {
 	 * Constructeur d'un coup de foudre
 	 */
 	public CoupDeFoudre() {
-		super("Coup de foudre");
+		super("HoldUp");
 	}
 
 	/**

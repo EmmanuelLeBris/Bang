@@ -15,7 +15,7 @@ public class VueSherif extends JPanel {
 	public VueSherif(boolean a) {
 		if(a)
 		{
-			s="./sheriff.png";
+			s="./SHERIF2.png";
 		}
 		else
 		{

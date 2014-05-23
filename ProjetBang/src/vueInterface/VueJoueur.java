@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,9 +22,10 @@ public class VueJoueur extends MyPanel {
 	public VuePointDeVie ptVie3;
 	public VuePointDeVie ptVie4;
 	public VuePointDeVie ptVie5;
+	public MyPanel ptsViesPerso;
 	public VuePortrait imagePerso;
-	public VueArme arme;	
 	public VueBonusMustang bonus1;
+	public ArrayList<VueCarteJoueur> vueCarteJoueur=new ArrayList<VueCarteJoueur>(12);
 	public VueBonusLunette bonus2;
 	public VueCarteJoueur carte1;
 	public VueCarteJoueur carte2;
@@ -41,22 +43,36 @@ public class VueJoueur extends MyPanel {
 	public JButton finDeTour;
 	public JButton bouttonOk;
 	public JTextArea textExplicatif;
+	private VueArme colt;
+	private VueArme schofield;
+	private VueArme remington;
+	private VueArme volcanic;
 
 
 	public VueJoueur(String s, String roleJ) {
 
 		JLabel nomPersoJoueur = new JLabel(s);
-		ptVie1 = new VuePointDeVie(roleJ.equals("SHERIF"));
-		ptVie2 = new VuePointDeVie(true);
-		ptVie3 = new VuePointDeVie(true);
-		ptVie4 = new VuePointDeVie(true);
-		ptVie5 = new VuePointDeVie(true);
 		imagePerso = new VuePortrait(s);
-		arme = new VueArme("schofieldb");
+		colt = new VueArme("Colt");
+		colt.setVisible(true);
+		schofield = new VueArme("Schofieldb");
+		schofield.setVisible(false);
+		remington = new VueArme("Remingtonb");
+		remington.setVisible(false);
+		volcanic = new VueArme("Volcanicb");
+		volcanic.setVisible(false);
 		bonus1 = new VueBonusMustang();
-		bonus2 = new VueBonusLunette(true);
+		bonus1.setVisible(false);
+		bonus2 = new VueBonusLunette();
+		bonus2.setVisible(false);
 		panelRole = new VueRoleJoueur(roleJ);
 
+		ptVie1 = new VuePointDeVie(false);
+		ptVie2 = new VuePointDeVie(false);
+		ptVie3 = new VuePointDeVie(false);
+		ptVie4 = new VuePointDeVie(false);
+		ptVie5 = new VuePointDeVie(false);
+		
 		BorderLayout layoutJoueur = new BorderLayout();
 		MyPanel cartesPanel = new MyPanel();
 		MyPanel role = new MyPanel();
@@ -94,18 +110,23 @@ public class VueJoueur extends MyPanel {
 		carte11 = new VueCarteJoueur("Schofield",0);
 		carte12 = new VueCarteJoueur("Saloon",0);
 
-		cartes.add(carte1);
-		cartes.add(carte2);
-		cartes.add(carte3);
-		cartes.add(carte4);
-		cartes.add(carte5);
-		cartes.add(carte6);
-		cartes.add(carte7);
-		cartes.add(carte8);
-		cartes.add(carte9);
-		cartes.add(carte10);
-		cartes.add(carte11);
-		cartes.add(carte12);
+		vueCarteJoueur.add(carte1);
+		vueCarteJoueur.add(carte2);
+		vueCarteJoueur.add(carte3);
+		vueCarteJoueur.add(carte4);
+		vueCarteJoueur.add(carte5);
+		vueCarteJoueur.add(carte6);
+		vueCarteJoueur.add(carte7);
+		vueCarteJoueur.add(carte8);
+		vueCarteJoueur.add(carte9);
+		vueCarteJoueur.add(carte10);
+		vueCarteJoueur.add(carte11);
+		vueCarteJoueur.add(carte12);
+		
+		for(VueCarteJoueur v : vueCarteJoueur)
+		{
+			cartes.add(v);
+		}
 
 		role.setLayout(new BorderLayout());
 		MyPanel panelNordRole = new MyPanel();
@@ -208,7 +229,7 @@ public class VueJoueur extends MyPanel {
 		panelSouthPersonnage.setPreferredSize(new Dimension(50, 147));
 		panelNorthPersonnage.setPreferredSize(new Dimension(127, 127));
 
-		MyPanel ptsViesPerso = new MyPanel();
+		ptsViesPerso = new MyPanel();
 
 		imagePerso.setPreferredSize(new Dimension(128, 127));
 		ptsViesPerso.setPreferredSize(new Dimension(77, 30));
@@ -234,8 +255,14 @@ public class VueJoueur extends MyPanel {
 		MyPanel panelBonus = new MyPanel();
 		panelSouthPersonnage.setLayout(new GridLayout(2, 1));
 
-		arme.setPreferredSize(new Dimension(95, 60));
-		panelArme.add(arme);
+		volcanic.setPreferredSize(new Dimension(95, 60));
+		schofield.setPreferredSize(new Dimension(95, 60));
+		colt.setPreferredSize(new Dimension(95, 60));
+		remington.setPreferredSize(new Dimension(95, 60));
+		panelArme.add(volcanic);
+		panelArme.add(colt);
+		panelArme.add(remington);
+		panelArme.add(schofield);
 
 		panelBonus.setLayout(new GridLayout(1, 2));
 		MyPanel panelBonus1 = new MyPanel();
@@ -253,5 +280,16 @@ public class VueJoueur extends MyPanel {
 
 		panelSouthPersonnage.add(panelArme);
 		panelSouthPersonnage.add(panelBonus);
+	}
+	
+	public void change(String nom) {
+		remington.setVisible(false);
+		schofield.setVisible(false);
+		volcanic.setVisible(false);
+		colt.setVisible(false);
+		if(nom.equals("Remington")) remington.setVisible(true);
+		else if(nom.equals("Schofield")) schofield.setVisible(true);
+		else if(nom.equals("Volcanic")) volcanic.setVisible(true);
+		
 	}
 }

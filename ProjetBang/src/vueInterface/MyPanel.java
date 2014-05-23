@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 public class MyPanel extends JPanel {
 
 	private Image bg;
+	Graphics graph;
 
 	public MyPanel()
 	{
@@ -27,7 +28,12 @@ public class MyPanel extends JPanel {
 	}
 
 	public void paintComponent(Graphics g) {
+		graph = g;
 		g.drawImage(bg, 0, 0, null);
-
+	}
+	
+	public void refresh(String s){
+		bg = new ImageIcon(s).getImage();
+		graph.drawImage(bg, 0, 0, null);
 	}
 }

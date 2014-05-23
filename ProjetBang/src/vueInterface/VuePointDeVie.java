@@ -10,7 +10,6 @@ public class VuePointDeVie extends JPanel {
 
 	private Image bg;
 	private String s="";
-	private boolean up;
 
 	public VuePointDeVie(boolean a) {
 		if (a) {

@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 public class VueAdversaire extends MyPanel {
@@ -20,23 +21,36 @@ public class VueAdversaire extends MyPanel {
 	public VuePointDeVie panelVie5;
 	public VueCartesAdv cartes;
 	public VuePortrait portrait;
-	public VueArme arme;
 	public VueSherif panelEtoile;
 	public VueBonusMustang bonus1;
 	public VueBonusLunette bonus2;
 	public JLabel nomPerso;
 	public JLabel labelnbCartes;
 	public int nbCartes=5;
+	public MyPanel panelArme;
+	private VueArme colt;
+	private VueArme schofield;
+	private JComponent remington;
+	private VueArme volcanic;
 	
 	public VueAdversaire(String s, String role) {
 		bonus1 = new VueBonusMustang();
-		bonus2 = new VueBonusLunette(true);
+		bonus1.setVisible(false);
+		bonus2 = new VueBonusLunette();
+		bonus2.setVisible(false);
 		cartes = new VueCartesAdv();
 		nomPerso = new JLabel(s, JLabel.CENTER);
 		labelnbCartes = new JLabel(" "+nbCartes);
 		portrait = new VuePortrait(s);
 		panelEtoile = new VueSherif(role.equals("SHERIF"));
-		arme = new VueArme("colt");
+		colt = new VueArme("Colt");
+		colt.setVisible(true);
+		schofield = new VueArme("Schofieldb");
+		schofield.setVisible(false);
+		remington = new VueArme("Remingtonb");
+		remington.setVisible(false);
+		volcanic = new VueArme("Volcanicb");
+		volcanic.setVisible(false);
 		panelVie1 = new VuePointDeVie(role.equals("SHERIF"));
 		panelVie2 = new VuePointDeVie(true);
 		panelVie3 = new VuePointDeVie(true);
@@ -109,11 +123,17 @@ public class VueAdversaire extends MyPanel {
 		panelHautGauche.add(panelSherif);
 		panelHautGauche.add(panelVies);
 
-		MyPanel panelArme = new MyPanel();
+		panelArme = new MyPanel();
 		MyPanel panelBonus = new MyPanel();
 		panelBasGauche.setLayout(gridlay);
-		arme.setPreferredSize(new Dimension(95, 60));
-		panelArme.add(arme);
+		volcanic.setPreferredSize(new Dimension(95, 60));
+		schofield.setPreferredSize(new Dimension(95, 60));
+		colt.setPreferredSize(new Dimension(95, 60));
+		remington.setPreferredSize(new Dimension(95, 60));
+		panelArme.add(volcanic);
+		panelArme.add(colt);
+		panelArme.add(remington);
+		panelArme.add(schofield);
 
 		panelBonus.setLayout(new GridLayout(1, 2));
 		MyPanel panelBonus1 = new MyPanel();
@@ -141,5 +161,16 @@ public class VueAdversaire extends MyPanel {
 		c.ipadx = ipadx;
 		c.fill = fill;
 		c.anchor = anchor;
+	}
+
+	public void change(String nom) {
+		remington.setVisible(false);
+		schofield.setVisible(false);
+		volcanic.setVisible(false);
+		colt.setVisible(false);
+		if(nom.equals("Remington")) remington.setVisible(true);
+		else if(nom.equals("Schofield")) schofield.setVisible(true);
+		else if(nom.equals("Volcanic")) volcanic.setVisible(true);
+		
 	}
 }

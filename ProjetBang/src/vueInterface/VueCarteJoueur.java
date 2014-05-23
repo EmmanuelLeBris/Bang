@@ -47,5 +47,7 @@ public class VueCarteJoueur extends JPanel {
 	public void maj(int k)
 	{
 		panelNomCartes.setText(str+" x"+k);
+		if(k==0) bouton.setEnabled(false); 
+		else bouton.setEnabled(true);
 	}
 }

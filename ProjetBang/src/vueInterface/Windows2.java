@@ -1,8 +1,13 @@
 package vueInterface;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.LayoutManager;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.OverlayLayout;
 
 import controlleur.Controlleur;
 
@@ -10,11 +15,24 @@ public class Windows2 {
 
 	public VueAdversaire VueAdv[] = new VueAdversaire[4];
 	public VueJoueur VueJoueur;
-	public Windows2(VueJoueur vueJoueur, VueAdversaire vueAdv[], Controlleur controlleur) {
-		FenetrePrincipale fenetre = new FenetrePrincipale("./fond.jpg");
-		fenetre.setLayout(new GridLayout(2, 1));
+	public VueMagasin fondMagasin;
+	public FenetrePrincipale fenetre;
+	public MyPanel panelPrincipal;
+	public Windows2(VueJoueur vueJoueur, VueAdversaire vueAdv[], Controlleur controlleur) {//Jwindow pour le splashscreen
+		fenetre = new FenetrePrincipale();
+		panelPrincipal = new  MyPanel("fond.png");
+		panelPrincipal.setLayout(new GridLayout(2, 1));
 		MyPanel panelhaut = new MyPanel();
-
+	    JFrame frame = new JFrame("Overlay Example");
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    JPanel panel = new JPanel();
+	    LayoutManager overlay = new OverlayLayout(panel);
+	    panel.setLayout(overlay);
+	    fondMagasin = new VueMagasin(2,"Mustang","Rate",null,null,null);
+	    fondMagasin.setVisible(false);
+	    panel.add(fondMagasin,BorderLayout.NORTH);    
+	    panel.add(panelPrincipal);
+	    panel.setBackground(Color.red);
 		// Vue des adversaires
 
 		this.VueAdv = vueAdv;
@@ -30,9 +48,9 @@ public class Windows2 {
 
 		// Vue du joueur
 		this.VueJoueur = vueJoueur;
-
-		fenetre.add(panelhaut);
-		fenetre.add(VueJoueur);
+		fenetre.add(panel);
+		panelPrincipal.add(panelhaut);
+		panelPrincipal.add(VueJoueur);
 		fenetre.setVisible(true);
 	}
 

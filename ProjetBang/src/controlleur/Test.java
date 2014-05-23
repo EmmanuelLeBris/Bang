@@ -9,7 +9,12 @@ public class Test {
 		mapartie.initJoueurs("ROSE DOOLAN");
 		Controlleur c =new Controlleur(mapartie);
 		mapartie.setControlleur(c);
-		mapartie.lancerJeu();
+		try {
+			mapartie.lancerJeu();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

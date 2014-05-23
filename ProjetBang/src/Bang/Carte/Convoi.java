@@ -4,12 +4,12 @@ import Bang.Jeu.Jeu;
 import Bang.Jeu.Joueur;
 import Bang.Jeu.PlusDeCartesException;
 
-public class Convois extends ActionSurjoueur {
+public class Convoi extends ActionSurjoueur {
 	/**
 	 * Constructeur d'un convois
 	 */
-	public Convois() {
-		super("Convois");
+	public Convoi() {
+		super("Convoi");
 	}
 
 	/**

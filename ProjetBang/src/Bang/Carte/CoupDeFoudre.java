@@ -17,6 +17,7 @@ public class CoupDeFoudre extends ActionSurAdversaire {
 	 * @param cible joueur cible qui se voit défaussé d'une carte
 	 */
 	public void capacite(Jeu jeu, Joueur cible) {
+		System.out.println("HOOOOOLDUUUUUP");
 		Action defausse = cible.defausserRand();
 		if(defausse!=null) jeu.defausser(defausse);
 	}

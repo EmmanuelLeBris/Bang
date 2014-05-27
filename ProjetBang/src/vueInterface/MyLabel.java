@@ -5,23 +5,24 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
 
-public class MyPanel extends JPanel {
-
-	protected Image bg;
+public class MyLabel extends JLabel {
+	private Image bg;
 	Graphics graph;
 
-	public MyPanel()
+	public MyLabel()
 	{
 		
 	}
 	@Override
 	public void setBackground(Color arg0) {
+		// TODO Auto-generated method stub
 		super.setBackground(new Color(0, 0, 0, 0));
 	}
 
-	public MyPanel(String s) {
+	public MyLabel(String s) {
+		// TODO Auto-generated constructor stub
 		bg = new ImageIcon(s).getImage();
 	}
 

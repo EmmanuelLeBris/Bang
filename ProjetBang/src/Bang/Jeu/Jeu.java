@@ -115,7 +115,7 @@ public class Jeu extends Observable{
 		for(int i = 0; i<25; i++) this.pioche.add(new Bang());
 		for(int i = 0; i<12; i++) this.pioche.add(new Rate());
 		for(int i = 0; i<4; i++) this.pioche.add(new CoupDeFoudre());
-		for(int i = 0; i<2; i++) this.pioche.add(new Biere());
+		for(int i = 0; i<6; i++) this.pioche.add(new Biere());
 		for(int i = 0; i<2; i++) this.pioche.add(new Convoi());
 		for(int i = 0; i<2; i++) this.pioche.add(new Magasin());
 		this.pioche.add(new Saloon());
@@ -239,8 +239,7 @@ public class Jeu extends Observable{
 							//On demande la cible si il faut
 							if(a instanceof ActionSurAdversaire){
 								System.out.println("Choisir un joueur cible : ");
-								@SuppressWarnings("resource")
-								Scanner scan = new Scanner(System.in);
+
 								while(!joueurciblee)
 								{
 									Thread.sleep(50);
@@ -250,7 +249,9 @@ public class Jeu extends Observable{
 								this.joueurciblee=false;
 								for(Joueur j : joueursEnJeu){
 									if(j.getPerso().getNom().equals(nomEnnemis)) cible=j; 
+									
 								}
+								
 							}
 						}
 
@@ -260,12 +261,16 @@ public class Jeu extends Observable{
 
 						if(!a.getNom().equals("Passer Tour"))
 							this.faireAction(a, joueurCourant,cible);
+						
 						else break;
 						if(finJeu()) System.exit(0);
 
 						//Update des amis et ennemis et des joueurs en jeu
 						for(Joueur j :participants){
-							if(j.getPdv()<=0) joueursEnJeu.remove(j);
+							if(j.getPdv()<=0 && joueursEnJeu.contains(j)){
+								for (Action act : j.getMain()) defausser(act);
+								joueursEnJeu.remove(j);
+							}
 						}
 						for(Joueur j :joueursEnJeu){
 							if(j instanceof IA) ((IA) j).notifierAction(a, joueurCourant, cible, joueursEnJeu);
@@ -382,7 +387,6 @@ public class Jeu extends Observable{
 			{//On equipe le nouveau bonus
 				if (a instanceof Arme)
 				{//Si c'est une arme on remplace l'ancienne
-					System.out.println("JE JOUE UNE ARME PUTAIN D'ENCUL32 DE TA MAMANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
 					ArrayList<ActionBonus> bonus = jCourant.getBonus();
 					ActionBonus aSuppr = null;
 					for(ActionBonus ab : bonus){
@@ -403,16 +407,21 @@ public class Jeu extends Observable{
 			switch(nomAction){
 			case "Biere" : ((Biere)a).capacite(jCourant);
 			break;
-			case "Magasin" : ((Magasin) a).capacite(this);
+			case "Magasin" : try {
+					((Magasin) a).capacite(this);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			break;
 			case "Convoi" : ((Convoi) a).capacite(jCourant, this);
 			break;
 			case "Saloon" : ((Saloon) a).capacite(this);
 			break;
-			case "Coup de foudre" : ((CoupDeFoudre) a).capacite(this, cible);
+			case "HoldUp" : ((CoupDeFoudre) a).capacite(this, cible);
 			break;
 			case "Bang" : 
-				if(!jCourant.aTire()){
+				if((!jCourant.aTire() || jCourant.isTireIllimite()) && calculerDistance(jCourant, cible)<=jCourant.getPortee()){
 					((Bang) a).capacite(this, cible, jCourant);
 					jCourant.setATire(true);
 				}

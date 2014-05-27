@@ -13,9 +13,9 @@ public class VuePointDeVie extends JPanel {
 
 	public VuePointDeVie(boolean a) {
 		if (a) {
-			 s="./pdvUp.png";
+			 s="./pdvUpBois.png";
 		} else {
-			s="./pdvDown.png";
+			s="./pdvDownBois.png";
 		}
 		bg = new ImageIcon(s).getImage();
 	}

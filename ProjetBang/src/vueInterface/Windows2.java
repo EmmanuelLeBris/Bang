@@ -4,34 +4,41 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.OverlayLayout;
 
+import Bang.Carte.Action;
+import Bang.Carte.Magasin;
 import controlleur.Controlleur;
 
 public class Windows2 {
 
 	public VueAdversaire VueAdv[] = new VueAdversaire[4];
 	public VueJoueur VueJoueur;
-	public VueMagasin fondMagasin;
 	public FenetrePrincipale fenetre;
-	public MyPanel panelPrincipal;
+	public MyPanel PanelPrincipal;
+	public JPanel panel;
+	public JPanel panelVueCarte;
+	public Controlleur control;
+	
 	public Windows2(VueJoueur vueJoueur, VueAdversaire vueAdv[], Controlleur controlleur) {//Jwindow pour le splashscreen
 		fenetre = new FenetrePrincipale();
-		panelPrincipal = new  MyPanel("fond.png");
-		panelPrincipal.setLayout(new GridLayout(2, 1));
-		MyPanel panelhaut = new MyPanel();
-	    JFrame frame = new JFrame("Overlay Example");
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    JPanel panel = new JPanel();
+		control = controlleur;
+		PanelPrincipal =new  MyPanel("./fond.png");
+		PanelPrincipal.setLayout(new GridLayout(2, 1));
+		JPanel panelhaut = new JPanel();
+		panelhaut.setOpaque(false);
+	    panel = new JPanel();
 	    LayoutManager overlay = new OverlayLayout(panel);
+	    
+	    panelVueCarte =new JPanel();
+	    LayoutManager overlayAdv = new OverlayLayout(panelVueCarte);
+	    
 	    panel.setLayout(overlay);
-	    fondMagasin = new VueMagasin(2,"Mustang","Rate",null,null,null);
-	    fondMagasin.setVisible(false);
-	    panel.add(fondMagasin,BorderLayout.NORTH);    
-	    panel.add(panelPrincipal);
+	    panel.add(PanelPrincipal);
 	    panel.setBackground(Color.red);
 		// Vue des adversaires
 
@@ -49,9 +56,11 @@ public class Windows2 {
 		// Vue du joueur
 		this.VueJoueur = vueJoueur;
 		fenetre.add(panel);
-		panelPrincipal.add(panelhaut);
-		panelPrincipal.add(VueJoueur);
+		PanelPrincipal.add(panelhaut);
+		PanelPrincipal.add(VueJoueur);
 		fenetre.setVisible(true);
+		fenetre.pack();
 	}
+
 
 }

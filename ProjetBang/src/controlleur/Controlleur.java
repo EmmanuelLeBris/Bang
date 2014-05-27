@@ -44,14 +44,14 @@ public class Controlleur implements Observer,MouseListener{
 	private String carteJouee = "";
 	private String joueurSelectionne= "";
 	private Jeu j;
-	private Windows2 v;
+	public Windows2 v;
 	private ActionBang actionBang;
 	private ActionRate actionRate;
 	private ActionHoldUp actionHoldUp;
 	private ActionMustang actionMustang;
 	private ActionLunette actionLunette;
 	private ActionConvoi actionConvoi;
-	private ActionMagasin actionMagasin;
+	public ActionMagasin actionMagasin;
 	private ActionVolcanic actionVolcanic;
 	private ActionBiere actionBiere;
 	private ActionRemington actionRemington;
@@ -394,15 +394,19 @@ public class Controlleur implements Observer,MouseListener{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		ArrayList<Joueur> joueurs = j.getParticipants();
+		majPdvJ(j.getJoueurHumain().getPdv());
 		int k = 0;
 		for(int i = 1; i<joueurs.size(); i++){
 			k = (j.getIndexJHumain()+i)%joueurs.size();
-			
+			v.VueAdv[i-1].majpdv(joueurs.get(k));
 			for(ActionBonus b : joueurs.get(k).getBonus()){
 				if(b instanceof Arme) v.VueAdv[i-1].change(b.getNom());
 				else if(b instanceof Mustang) v.VueAdv[i-1].bonus1.setVisible(true);
 				else if(b instanceof Lunette) v.VueAdv[i-1].bonus2.setVisible(true);
 			}
+			
+			v.VueAdv[i-1].labelnbCartes.setText(joueurs.get(k).getMain().size()+"");
+			System.out.println("TAILLE DE LA MAIN "+joueurs.get(k).getMain().size());
 		}
 		for(ActionBonus b : j.getJoueurHumain().getBonus()){
 			if(b instanceof Arme) v.VueJoueur.change(b.getNom());
@@ -437,7 +441,10 @@ public class Controlleur implements Observer,MouseListener{
 		v.VueJoueur.carte10.maj(remington);
 		v.VueJoueur.carte11.maj(schofield);
 		v.VueJoueur.carte12.maj(saloon);
-		v.panelPrincipal.refresh("fond.png");
+		if(j.getJoueurHumain().aTire() && !j.getJoueurHumain().isTireIllimite())
+		{
+			v.VueJoueur.carte1.bouton.setEnabled(false);
+		}
 	}
 	
 	public void majLines()
@@ -446,6 +453,28 @@ public class Controlleur implements Observer,MouseListener{
 		{
 			t.bouton.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		}
-	}	
+	}
+	
+	public void majPdvJ (int i)
+	{
+		v.VueJoueur.ptsViesPerso.removeAll();
+		v.VueJoueur.listePdv.set(0,new VuePointDeVie(false));
+		v.VueJoueur.listePdv.set(1,new VuePointDeVie(false));
+		v.VueJoueur.listePdv.set(2,new VuePointDeVie(false));
+		v.VueJoueur.listePdv.set(3,new VuePointDeVie(false));
+		v.VueJoueur.listePdv.set(4,new VuePointDeVie(false));
+		
+		for(int k=0;k<i;k++)
+		{
+			v.VueJoueur.listePdv.set(4-k, new VuePointDeVie(true));
+
+		}
+
+		v.VueJoueur.ptsViesPerso.add(v.VueJoueur.listePdv.get(0));
+		v.VueJoueur.ptsViesPerso.add(v.VueJoueur.listePdv.get(1));
+		v.VueJoueur.ptsViesPerso.add(v.VueJoueur.listePdv.get(2));
+		v.VueJoueur.ptsViesPerso.add(v.VueJoueur.listePdv.get(3));
+		v.VueJoueur.ptsViesPerso.add(v.VueJoueur.listePdv.get(4));
+	}
 	
 }

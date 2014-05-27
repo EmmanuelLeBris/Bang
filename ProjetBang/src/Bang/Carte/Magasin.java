@@ -1,6 +1,9 @@
 package Bang.Carte;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Observer;
+
 
 import Bang.IA.IA;
 import Bang.Jeu.Jeu;
@@ -11,16 +14,23 @@ public class Magasin extends ActionSurjoueur {
 	/**
 	 * Constructeur de l'action magasin
 	 */
+	
+	public boolean achoisi =false;
+	public int choix;
+
+
 	public Magasin() {
 		super("Magasin");
 	}
 
 	/**
 	 * Chaque joueur pioche une carte
+	 * 
 	 * @param jeu
+	 * @throws InterruptedException
 	 */
-	public void capacite(Jeu jeu) {
-		ArrayList<Action> magasin = new ArrayList<Action>();
+	public void capacite(Jeu jeu) throws InterruptedException {
+		ArrayList<Action> magasin = new ArrayList<Action>() ;
 		ArrayList<Joueur> joueurs = jeu.getJoueursEnJeu();
 		for (int i = 0; i < joueurs.size(); i++) {
 			try {
@@ -29,17 +39,16 @@ public class Magasin extends ActionSurjoueur {
 				e.getMessage();
 			}
 		}
-		System.out.println("Cartes en magasin : "+magasin);
+		System.out.println("Cartes en magasin : " + magasin);
 		Collections.shuffle(magasin);
-		for(Joueur j : jeu.getJoueursEnJeu()){
-			if(j instanceof IA){
+		for (Joueur j : jeu.getJoueursEnJeu()) {
 				j.donnerAction(magasin.get(0));
 				magasin.remove(0);
-			}
-			else{
-				//A FAIRE le joueur doit choisir une carte
-			}
 		}
+		
 	}
+
+
+	
 
 }

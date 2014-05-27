@@ -15,14 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class VueJoueur extends MyPanel {
+public class VueJoueur extends JPanel {
 
-	public VuePointDeVie ptVie1;
-	public VuePointDeVie ptVie2;
-	public VuePointDeVie ptVie3;
-	public VuePointDeVie ptVie4;
-	public VuePointDeVie ptVie5;
-	public MyPanel ptsViesPerso;
+	
+	public ArrayList<VuePointDeVie> listePdv = new ArrayList<VuePointDeVie>(5);
+	public JPanel ptsViesPerso;
 	public VuePortrait imagePerso;
 	public VueBonusMustang bonus1;
 	public ArrayList<VueCarteJoueur> vueCarteJoueur=new ArrayList<VueCarteJoueur>(12);
@@ -50,7 +47,7 @@ public class VueJoueur extends MyPanel {
 
 
 	public VueJoueur(String s, String roleJ) {
-
+		setOpaque(false);
 		JLabel nomPersoJoueur = new JLabel(s);
 		imagePerso = new VuePortrait(s);
 		colt = new VueArme("Colt");
@@ -67,17 +64,25 @@ public class VueJoueur extends MyPanel {
 		bonus2.setVisible(false);
 		panelRole = new VueRoleJoueur(roleJ);
 
-		ptVie1 = new VuePointDeVie(false);
-		ptVie2 = new VuePointDeVie(false);
-		ptVie3 = new VuePointDeVie(false);
-		ptVie4 = new VuePointDeVie(false);
-		ptVie5 = new VuePointDeVie(false);
-		
+		VuePointDeVie ptVie1 = new VuePointDeVie(false);
+		VuePointDeVie ptVie2 = new VuePointDeVie(false);
+		VuePointDeVie ptVie3 = new VuePointDeVie(false);
+		VuePointDeVie ptVie4 = new VuePointDeVie(false);
+		VuePointDeVie ptVie5 = new VuePointDeVie(false);
+		listePdv.add(ptVie1);
+		listePdv.add(ptVie2);
+		listePdv.add(ptVie3);
+		listePdv.add(ptVie4);
+		listePdv.add(ptVie5);		
 		BorderLayout layoutJoueur = new BorderLayout();
-		MyPanel cartesPanel = new MyPanel();
-		MyPanel role = new MyPanel();
-		MyPanel nomPerso = new MyPanel();
-		MyPanel personnage = new MyPanel();
+		JPanel cartesPanel = new JPanel();
+		cartesPanel.setOpaque(false);
+		JPanel role = new JPanel();
+		role.setOpaque(false);
+		JPanel nomPerso = new JPanel();
+		nomPerso.setOpaque(false);
+		JPanel personnage = new JPanel();
+		personnage.setOpaque(false);
 		setLayout(layoutJoueur);
 		add(cartesPanel, BorderLayout.CENTER);
 		role.setPreferredSize(new Dimension(160, 20));
@@ -90,8 +95,10 @@ public class VueJoueur extends MyPanel {
 		BorderLayout layoutcartes = new BorderLayout();
 		cartesPanel.setLayout(layoutcartes);
 
-		MyPanel cartes = new MyPanel();
-		MyPanel marge = new MyPanel();
+		JPanel cartes = new JPanel();
+		cartes.setOpaque(false);
+		JPanel marge = new JPanel();
+		marge.setOpaque(false);
 		marge.setPreferredSize(new Dimension(50, 50));
 		cartesPanel.add(marge, BorderLayout.NORTH);
 		cartesPanel.add(cartes, BorderLayout.CENTER);
@@ -129,8 +136,10 @@ public class VueJoueur extends MyPanel {
 		}
 
 		role.setLayout(new BorderLayout());
-		MyPanel panelNordRole = new MyPanel();
-		MyPanel panelSudRole = new MyPanel();
+		JPanel panelNordRole = new JPanel();
+		panelNordRole.setOpaque(false);
+		JPanel panelSudRole = new JPanel();
+		panelSudRole.setOpaque(false);
 
 		panelRole.setPreferredSize(new Dimension(115, 70));
 		panelRole.setBackground(Color.magenta);
@@ -144,25 +153,31 @@ public class VueJoueur extends MyPanel {
 
 		BorderLayout nomPersoLayout = new BorderLayout();
 		nomPerso.setLayout(nomPersoLayout);
-		MyPanel nomPersonnageJoueur = new MyPanel();
+		JPanel nomPersonnageJoueur = new JPanel();
+		nomPersonnageJoueur.setOpaque(false);
 		nomPerso.add(nomPersonnageJoueur, BorderLayout.WEST);
 
-		MyPanel panelFinTour = new MyPanel();
+		JPanel panelFinTour = new JPanel();
+		panelFinTour.setOpaque(false);
 		panelFinTour.setLayout(new BorderLayout());
 
-		MyPanel eastFin = new MyPanel();
+		JPanel eastFin = new JPanel();
+		eastFin.setOpaque(false);
 		eastFin.setPreferredSize(new Dimension(50, 30));
 		panelFinTour.add(eastFin, BorderLayout.EAST);
 
-		MyPanel westFin = new MyPanel();
+		JPanel westFin = new JPanel();
+		westFin.setOpaque(false);
 		westFin.setPreferredSize(new Dimension(50, 30));
 		panelFinTour.add(westFin, BorderLayout.WEST);
 
-		MyPanel northFin = new MyPanel();
+		JPanel northFin = new JPanel();
+		northFin.setOpaque(false);
 		northFin.setPreferredSize(new Dimension(50, 25));
 		panelFinTour.add(northFin, BorderLayout.NORTH);
 
-		MyPanel southFin = new MyPanel();
+		JPanel southFin = new JPanel();
+		southFin.setOpaque(false);
 		southFin.setPreferredSize(new Dimension(50, 25));
 		panelFinTour.add(southFin, BorderLayout.SOUTH);
 
@@ -177,8 +192,10 @@ public class VueJoueur extends MyPanel {
 
 		nomPerso.add(panelFinTour, BorderLayout.EAST);
 
-		MyPanel name = new MyPanel();
-		MyPanel northName = new MyPanel();
+		JPanel name = new JPanel();
+		name.setOpaque(false);
+		JPanel northName = new JPanel();
+		northName.setOpaque(false);
 		northName.setPreferredSize(new Dimension(20, 40));
 		nomPersonnageJoueur.setLayout(new BorderLayout());
 		nomPersonnageJoueur.add(name, BorderLayout.CENTER);
@@ -186,12 +203,14 @@ public class VueJoueur extends MyPanel {
 
 		nomPersonnageJoueur.add(nomPersoJoueur);
 
-		MyPanel panelExplication = new MyPanel();
+		JPanel panelExplication = new JPanel();
+		panelExplication.setOpaque(false);
 
 		
 		panelExplication.setPreferredSize(new Dimension(50, 50));
 		
 		JPanel panelText = new JPanel();
+		panelText.setOpaque(false);
 		panelText.setLayout(new BorderLayout());
 		panelText.setBackground(Color.white);
 		
@@ -213,7 +232,7 @@ public class VueJoueur extends MyPanel {
 		panelBouttonOk.setBackground(Color.white);
 		panelBouttonOk.setLayout(new BorderLayout());
 		panelBouttonOk.add(bouttonOk,BorderLayout.EAST);
-
+		panelBouttonOk.setBackground(Color.white);
 		panelText.add(panelBouttonOk,BorderLayout.SOUTH);
 		
 		panelText.add(textExplicatif,BorderLayout.CENTER);
@@ -224,12 +243,15 @@ public class VueJoueur extends MyPanel {
 		nomPerso.add(panelExplication, BorderLayout.CENTER);
 
 		personnage.setLayout(new BorderLayout());
-		MyPanel panelSouthPersonnage = new MyPanel();
-		MyPanel panelNorthPersonnage = new MyPanel();
+		JPanel panelSouthPersonnage = new JPanel();
+		panelSouthPersonnage.setOpaque(false);
+		JPanel panelNorthPersonnage = new JPanel();
+		panelNorthPersonnage.setOpaque(false);
 		panelSouthPersonnage.setPreferredSize(new Dimension(50, 147));
 		panelNorthPersonnage.setPreferredSize(new Dimension(127, 127));
 
-		ptsViesPerso = new MyPanel();
+		ptsViesPerso = new JPanel();
+		ptsViesPerso.setOpaque(false);
 
 		imagePerso.setPreferredSize(new Dimension(128, 127));
 		ptsViesPerso.setPreferredSize(new Dimension(77, 30));
@@ -242,7 +264,8 @@ public class VueJoueur extends MyPanel {
 		ptsViesPerso.add(ptVie4);
 		ptsViesPerso.add(ptVie5);
 
-		MyPanel westVies = new MyPanel();
+		JPanel westVies = new JPanel();
+		westVies.setOpaque(false);
 		westVies.setPreferredSize(new Dimension(11, 20));
 
 		panelNorthPersonnage.add(westVies, BorderLayout.WEST);
@@ -251,8 +274,10 @@ public class VueJoueur extends MyPanel {
 		personnage.add(panelNorthPersonnage, BorderLayout.CENTER);
 		personnage.add(panelSouthPersonnage, BorderLayout.SOUTH);
 
-		MyPanel panelArme = new MyPanel();
-		MyPanel panelBonus = new MyPanel();
+		JPanel panelArme = new JPanel();
+		panelArme.setOpaque(false);
+		JPanel panelBonus = new JPanel();
+		panelBonus.setOpaque(false);
 		panelSouthPersonnage.setLayout(new GridLayout(2, 1));
 
 		volcanic.setPreferredSize(new Dimension(95, 60));
@@ -265,8 +290,10 @@ public class VueJoueur extends MyPanel {
 		panelArme.add(schofield);
 
 		panelBonus.setLayout(new GridLayout(1, 2));
-		MyPanel panelBonus1 = new MyPanel();
-		MyPanel panelBonus2 = new MyPanel();
+		JPanel panelBonus1 = new JPanel();
+		panelBonus1.setOpaque(false);
+		JPanel panelBonus2 = new JPanel();
+		panelBonus2.setOpaque(false);
 		panelBonus.add(panelBonus1);
 		panelBonus.add(panelBonus2);
 
@@ -293,3 +320,4 @@ public class VueJoueur extends MyPanel {
 		
 	}
 }
+

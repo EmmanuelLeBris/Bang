@@ -10,9 +10,12 @@ public class VueBonusMustang extends JPanel {
 
 	private Image bg;
 	private String s;
+	public boolean up=true;
 
 	public VueBonusMustang() {
-		s = "mustangb.png";
+		if (up) {
+			s = "mustangb.png";
+		} 
 		bg = new ImageIcon(s).getImage();
 	}
 

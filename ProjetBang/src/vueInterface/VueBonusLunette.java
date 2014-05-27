@@ -13,7 +13,9 @@ public class VueBonusLunette extends JPanel {
 	private boolean up;
 
 	public VueBonusLunette() {
-		s = "./lunetteb.png";
+
+			s = "./lunetteb.png";
+
 		bg = new ImageIcon(s).getImage();
 	}
 

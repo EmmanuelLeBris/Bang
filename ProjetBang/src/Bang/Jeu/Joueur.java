@@ -129,10 +129,15 @@ public class Joueur {
 	 */
 	public Action defausserRand()
 	{
-		if (main.isEmpty()!=true)
+		if (!main.isEmpty())
 		{
+			Action temp;
 			int indexrandom = (int) ((this.main.size())*Math.random());
-			return this.main.get(indexrandom);
+			
+		
+			temp= this.main.get(indexrandom);
+			this.main.remove(indexrandom);
+			return temp;
 		}
 		else
 			return null;
@@ -328,6 +333,4 @@ public class Joueur {
 	public void setPdv(int i) {
 		pdv = i;		
 	}
-	
-	
 }

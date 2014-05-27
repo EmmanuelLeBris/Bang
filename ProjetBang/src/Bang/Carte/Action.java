@@ -1,6 +1,10 @@
 package Bang.Carte;
 
+import java.util.ArrayList;
+import java.util.Observable;
+
 public abstract class Action {
+
 	protected String nom;
 
 	/**

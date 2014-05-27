@@ -7,18 +7,18 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class VueAdversaire extends MyPanel {
+import Bang.Jeu.Joueur;
 
-	public VuePointDeVie panelVie1;
-	public VuePointDeVie panelVie2;
-	public VuePointDeVie panelVie3;
-	public VuePointDeVie panelVie4;
-	public VuePointDeVie panelVie5;
+public class VueAdversaire extends JPanel {
+
+	public ArrayList<VuePointDeVie> listePdv = new ArrayList<VuePointDeVie>(5);
 	public VueCartesAdv cartes;
 	public VuePortrait portrait;
 	public VueSherif panelEtoile;
@@ -27,21 +27,24 @@ public class VueAdversaire extends MyPanel {
 	public JLabel nomPerso;
 	public JLabel labelnbCartes;
 	public int nbCartes=5;
-	public MyPanel panelArme;
+	public JPanel panelArme;
 	private VueArme colt;
 	private VueArme schofield;
 	private JComponent remington;
 	private VueArme volcanic;
+	public JPanel panelVies;
 	
-	public VueAdversaire(String s, String role) {
+	public VueAdversaire(String perso, String role) {
+		setOpaque(false);
+		//bg = new ImageIcon("fond.png").getImage();
 		bonus1 = new VueBonusMustang();
 		bonus1.setVisible(false);
 		bonus2 = new VueBonusLunette();
 		bonus2.setVisible(false);
 		cartes = new VueCartesAdv();
-		nomPerso = new JLabel(s, JLabel.CENTER);
-		labelnbCartes = new JLabel(" "+nbCartes);
-		portrait = new VuePortrait(s);
+		nomPerso = new JLabel(perso, JLabel.CENTER);
+		labelnbCartes = new JLabel();
+		portrait = new VuePortrait(perso);
 		panelEtoile = new VueSherif(role.equals("SHERIF"));
 		colt = new VueArme("Colt");
 		colt.setVisible(true);
@@ -51,30 +54,41 @@ public class VueAdversaire extends MyPanel {
 		remington.setVisible(false);
 		volcanic = new VueArme("Volcanicb");
 		volcanic.setVisible(false);
-		panelVie1 = new VuePointDeVie(role.equals("SHERIF"));
-		panelVie2 = new VuePointDeVie(true);
-		panelVie3 = new VuePointDeVie(true);
-		panelVie4 = new VuePointDeVie(true);
-		panelVie5 = new VuePointDeVie(true);
+		VuePointDeVie panelVie1 = new VuePointDeVie(role.equals("SHERIF"));
+		VuePointDeVie panelVie2 = new VuePointDeVie(true);
+		VuePointDeVie panelVie3 = new VuePointDeVie(true);
+		VuePointDeVie panelVie4 = new VuePointDeVie(true);
+		VuePointDeVie panelVie5 = new VuePointDeVie(true);
 
+		listePdv.add(panelVie1);
+		listePdv.add(panelVie2);
+		listePdv.add(panelVie3);
+		listePdv.add(panelVie4);
+		listePdv.add(panelVie5);
+		
 		setLayout(new GridLayout(1, 2));
-		MyPanel panelPerso = new MyPanel();
-		MyPanel sherifvie = new MyPanel();
+		JPanel panelPerso = new JPanel();
+		panelPerso.setOpaque(false);
+		JPanel sherifvie = new JPanel();
+		sherifvie.setOpaque(false);
 		add(sherifvie);
 		add(panelPerso);
 
-		MyPanel panelportrait = new MyPanel();
-		MyPanel panelcartes = new MyPanel();
+		JPanel panelportrait = new JPanel();
+		panelportrait.setOpaque(false);
+		JPanel panelcartes = new JPanel();
+		panelcartes.setOpaque(false);
 		GridLayout gridlay = new GridLayout(2, 1);
 		panelPerso.setLayout(gridlay);
 		panelPerso.add(panelportrait);
 		panelPerso.add(panelcartes);
 		cartes.setPreferredSize(new Dimension(80, 120));
-		MyPanel lol = new MyPanel();
-		lol.setPreferredSize(new Dimension(25, 30));
+		JPanel ecarteur = new JPanel();
+		ecarteur.setOpaque(false);
+		ecarteur.setPreferredSize(new Dimension(25, 30));
 		labelnbCartes.setPreferredSize(new Dimension(20,30));
 		panelcartes.setLayout(new BorderLayout());
-		panelcartes.add(lol, BorderLayout.WEST);
+		panelcartes.add(ecarteur, BorderLayout.WEST);
 		panelcartes.add(cartes, BorderLayout.NORTH);
 		panelcartes.add(labelnbCartes,BorderLayout.CENTER);
 		nomPerso.setFont(new Font("Gungsuh", Font.BOLD, 10));
@@ -86,7 +100,8 @@ public class VueAdversaire extends MyPanel {
 		panelportrait.setLayout(new GridBagLayout());
 
 		portrait.setPreferredSize(new Dimension(123, 123));
-		MyPanel inters = new MyPanel();
+		JPanel inters = new JPanel();
+		inters.setOpaque(false);
 
 		inters.setPreferredSize(new Dimension(1, 20));
 
@@ -98,16 +113,21 @@ public class VueAdversaire extends MyPanel {
 				38, GridBagConstraints.NONE, GridBagConstraints.CENTER);
 		panelportrait.add(inters, contrainte);
 
-		MyPanel panelHautGauche = new MyPanel();
+		JPanel panelHautGauche = new JPanel();
+		panelHautGauche.setOpaque(false);
 
-		MyPanel panelBasGauche = new MyPanel();
+		JPanel panelBasGauche = new JPanel();
+		panelBasGauche.setOpaque(false);
+		
 
 		sherifvie.setLayout(gridlay);
 		sherifvie.add(panelHautGauche);
 		sherifvie.add(panelBasGauche);
 
-		MyPanel panelSherif = new MyPanel();
-		MyPanel panelVies = new MyPanel();
+		JPanel panelSherif = new JPanel();
+		panelSherif.setOpaque(false);
+		panelVies = new JPanel();
+		panelVies.setOpaque(false);
 
 		panelEtoile.setPreferredSize(new Dimension(50, 50));
 		panelSherif.add(panelEtoile);
@@ -123,8 +143,10 @@ public class VueAdversaire extends MyPanel {
 		panelHautGauche.add(panelSherif);
 		panelHautGauche.add(panelVies);
 
-		panelArme = new MyPanel();
-		MyPanel panelBonus = new MyPanel();
+		panelArme = new JPanel();
+		panelArme.setOpaque(false);
+		JPanel panelBonus = new JPanel();
+		panelBonus.setOpaque(false);
 		panelBasGauche.setLayout(gridlay);
 		volcanic.setPreferredSize(new Dimension(95, 60));
 		schofield.setPreferredSize(new Dimension(95, 60));
@@ -136,8 +158,10 @@ public class VueAdversaire extends MyPanel {
 		panelArme.add(schofield);
 
 		panelBonus.setLayout(new GridLayout(1, 2));
-		MyPanel panelBonus1 = new MyPanel();
-		MyPanel panelBonus2 = new MyPanel();
+		JPanel panelBonus1 = new JPanel();
+		panelBonus1.setOpaque(false);
+		JPanel panelBonus2 = new JPanel();
+		panelBonus2.setOpaque(false);
 		panelBonus.add(panelBonus1);
 		panelBonus.add(panelBonus2);
 		bonus2.setPreferredSize(new Dimension(35, 60));
@@ -173,4 +197,26 @@ public class VueAdversaire extends MyPanel {
 		else if(nom.equals("Volcanic")) volcanic.setVisible(true);
 		
 	}
+	public void majpdv(Joueur joueur) {
+		// TODO Auto-generated method stub
+		panelVies.removeAll();
+		listePdv.set(0,new VuePointDeVie(false));
+		listePdv.set(1,new VuePointDeVie(false));
+		listePdv.set(2,new VuePointDeVie(false));
+		listePdv.set(3,new VuePointDeVie(false));
+		listePdv.set(4,new VuePointDeVie(false));
+		
+		for(int k=0;k<joueur.getPdv();k++)
+		{
+			listePdv.set(4-k, new VuePointDeVie(true));
+
+		}
+
+		panelVies.add(listePdv.get(0));
+		panelVies.add(listePdv.get(1));
+		panelVies.add(listePdv.get(2));
+		panelVies.add(listePdv.get(3));
+		panelVies.add(listePdv.get(4));
+	}
 }
+
